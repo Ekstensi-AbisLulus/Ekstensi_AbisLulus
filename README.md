@@ -1,59 +1,263 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AbisLulus
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**AbisLulus** adalah aplikasi yang dikembangkan untuk mendukung pembelajaran online (*e-learning*) dan pendampingan karier (*career mentoring*).
 
-## About Laravel
+Repository ini digunakan sebagai tempat penyimpanan kode sumber dan kolaborasi pengembangan aplikasi AbisLulus.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Teknologi yang Digunakan
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Backend:** Laravel (PHP)
+- **Dependency Manager:** Composer
+- **Frontend Build Tool:** Vite
+- **Database:** MySQL
+- **Version Control:** Git dan GitHub
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+> Versi teknologi yang digunakan perlu disesuaikan dengan konfigurasi proyek yang sebenarnya.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Persyaratan Instalasi
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Sebelum menjalankan proyek, pastikan perangkat sudah memiliki:
 
-## Laravel Sponsors
+1. PHP dengan versi yang sesuai dengan proyek.
+2. Composer.
+3. Git.
+4. MySQL atau MariaDB.
+5. Node.js dan npm.
+6. Code editor, seperti Visual Studio Code.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Pastikan instalasi berhasil dengan menjalankan perintah berikut di terminal:
 
-### Premium Partners
+```bash
+php -v
+composer -V
+git --version
+node -v
+npm -v
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Cara Menggunakan Repository
 
-## Contributing
+### 1. Clone Repository
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buka terminal, lalu masuk ke folder tempat kamu ingin menyimpan proyek.
 
-## Code of Conduct
+Jalankan:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git clone https://github.com/Ekstensi-AbisLulus/Ekstensi_AbisLulus.git
+```
 
-## Security Vulnerabilities
+Masuk ke folder proyek:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cd Ekstensi_AbisLulus
+```
 
-## License
+### 2. Install Dependensi PHP
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Jalankan perintah:
+
+```bash
+composer install
+```
+
+Perintah ini akan memasang dependensi PHP yang dibutuhkan aplikasi berdasarkan `composer.lock`.
+
+### 3. Install Dependensi Frontend
+
+Jalankan:
+
+```bash
+npm install
+```
+
+Perintah ini akan memasang dependensi frontend yang tercantum dalam `package.json`.
+
+### 4. Konfigurasi File Environment
+
+Buat file `.env` berdasarkan konfigurasi contoh:
+
+**Windows PowerShell:**
+
+```powershell
+Copy-Item .env.example .env
+```
+
+**Linux atau macOS:**
+
+```bash
+cp .env.example .env
+```
+
+File `.env` digunakan untuk menyimpan konfigurasi lokal, seperti koneksi database dan application key.
+
+### 5. Generate Application Key
+
+Jalankan:
+
+```bash
+php artisan key:generate
+```
+
+Perintah ini akan membuat application key untuk instalasi lokal.
+
+### 6. Konfigurasi Database
+
+Buat database baru melalui MySQL atau aplikasi pengelola database yang digunakan.
+
+Contoh nama database:
+
+```text
+abis_lulus
+```
+
+Kemudian buka file `.env` dan sesuaikan konfigurasi berikut dengan pengaturan database lokal:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=abis_lulus
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan kredensial MySQL di perangkat masing-masing.
+
+Jangan mengunggah file `.env` ke GitHub karena file tersebut dapat berisi informasi rahasia.
+
+### 7. Jalankan Migrasi Database
+
+Pastikan database sudah dibuat dan konfigurasi `.env` benar.
+
+Jalankan:
+
+```bash
+php artisan migrate
+```
+
+Perintah ini akan membuat tabel berdasarkan file migrasi yang tersedia di proyek.
+
+Jika proyek menyediakan seeder dan membutuhkan data awal, jalankan seeder sesuai petunjuk tim pengembang. Contohnya:
+
+```bash
+php artisan db:seed
+```
+
+> Jalankan seeder hanya jika sudah dipastikan sesuai dengan kebutuhan proyek. Hindari menjalankan `migrate:fresh` pada database yang berisi data penting karena perintah tersebut dapat menghapus tabel beserta datanya.
+
+### 8. Jalankan Aplikasi
+
+Buka terminal pertama, lalu jalankan server Laravel:
+
+```bash
+php artisan serve
+```
+
+Buka terminal kedua dan jalankan Vite:
+
+```bash
+npm run dev
+```
+
+Setelah kedua proses berjalan, buka alamat lokal yang ditampilkan oleh Laravel di terminal. Secara default, alamatnya adalah:
+
+http://127.0.0.1:8000
+
+Biarkan kedua terminal tetap berjalan selama aplikasi digunakan.
+
+---
+
+## Alur Kerja Git untuk Tim
+
+### Mengambil Perubahan Terbaru
+
+Sebelum mulai mengerjakan tugas:
+
+```bash
+git pull origin main
+```
+
+### Memeriksa Perubahan
+
+```bash
+git status
+```
+
+### Menambahkan Perubahan
+
+```bash
+git add .
+```
+
+### Membuat Commit
+
+Gunakan pesan commit yang menjelaskan perubahan:
+
+```bash
+git commit -m "Menambahkan fitur login"
+```
+
+Ganti pesan tersebut sesuai perubahan yang dilakukan.
+
+### Mengunggah Perubahan
+
+```bash
+git push origin main
+```
+
+**Catatan:** Untuk kerja tim, sebaiknya gunakan branch masing-masing dan ajukan Pull Request sebelum menggabungkan perubahan ke branch `main`, terutama jika beberapa anggota mengerjakan fitur berbeda.
+
+---
+
+## Troubleshooting
+
+### Composer Error
+
+Jalankan:
+
+```bash
+composer install
+```
+
+Pastikan versi PHP sesuai dengan persyaratan proyek.
+
+### Application Key Belum Tersedia
+
+Jalankan:
+
+```bash
+php artisan key:generate
+```
+
+### Database Connection Error
+
+Periksa konfigurasi database dalam `.env`, pastikan layanan MySQL berjalan, dan pastikan database sudah dibuat.
+
+### Perubahan Tidak Muncul di Browser
+
+Pastikan server Laravel dan Vite berjalan. Jika diperlukan, bersihkan cache konfigurasi:
+
+```bash
+php artisan optimize:clear
+```
+
+### Konflik Git
+
+Jika terjadi konflik ketika melakukan `git pull`, selesaikan konflik pada file yang ditandai sebelum melanjutkan commit.
+
+---
+
+## Catatan untuk Developer
+
+- Jangan mengunggah `.env`, password, API key, atau kredensial pribadi ke repository.
+- Jangan mengunggah folder `vendor/` dan `node_modules/`; dependensi dipasang melalui Composer dan npm.
+- Pastikan perubahan sudah diuji sebelum diunggah.
+- Komunikasikan perubahan struktur database kepada anggota tim.
+- Periksa konfigurasi dan dependensi proyek sebelum mengikuti instruksi instalasi tambahan.
+
+## Repository
+
+GitHub: https://github.com/Ekstensi-AbisLulus/Ekstensi_AbisLulus
