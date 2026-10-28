@@ -8,11 +8,10 @@ Repository ini digunakan sebagai tempat penyimpanan kode sumber dan kolaborasi p
 
 - **Backend:** Laravel (PHP)
 - **Dependency Manager:** Composer
-- **Frontend Build Tool:** Vite
+- **Frontend Build Tool:** Bootstrap
 - **Database:** MySQL
 - **Version Control:** Git dan GitHub
 
-> Versi teknologi yang digunakan perlu disesuaikan dengan konfigurasi proyek yang sebenarnya.
 
 ---
 
