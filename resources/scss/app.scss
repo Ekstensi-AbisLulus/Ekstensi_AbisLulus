@@ -455,6 +455,59 @@ $auth-accent: #F59E0B; // oranye ilustrasi
     }
 }
 
+// --- Riwayat aktivitas admin (PBI-09) ---
+// Tab tetap satu baris; di layar kecil bisa digeser horizontal.
+.history-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+
+    .nav-link {
+        color: $gray-600;
+        font-weight: 500;
+        white-space: nowrap;
+
+        &.active { color: $primary; }
+    }
+}
+
+.history-search { max-width: 360px; flex: 1 1 220px; }
+
+.history-table {
+    font-size: .9rem;
+
+    thead th {
+        font-size: .78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        color: $gray-600;
+        background-color: $gray-100;
+        border-bottom: 0;
+        white-space: nowrap;
+    }
+}
+
+.history-thumb {
+    width: 72px;
+    height: 44px;
+    border-radius: $border-radius-sm;
+    object-fit: cover;
+    background-color: $gray-100;
+    flex-shrink: 0;
+
+    &.history-thumb-empty {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: $gray-400;
+        font-size: 1.25rem;
+    }
+}
+
+.history-empty > .bi { font-size: 3rem; color: $gray-400; }
+
 // --- Layout panel ---
 .panel-sidebar {
     background-color: $white;

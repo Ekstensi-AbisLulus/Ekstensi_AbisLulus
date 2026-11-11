@@ -20,4 +20,17 @@ enum EventStatus: string
             self::Completed => 'Selesai',
         };
     }
+
+    /**
+     * Kelas badge Bootstrap untuk menampilkan status di tabel.
+     */
+    public function badgeClass(): string
+    {
+        return match ($this) {
+            self::Draft => 'text-bg-secondary',
+            self::Published => 'text-bg-success',
+            self::Cancelled => 'text-bg-danger',
+            self::Completed => 'text-bg-primary',
+        };
+    }
 }
