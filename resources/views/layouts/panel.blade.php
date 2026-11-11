@@ -14,7 +14,7 @@
         $adminMenu = [
             ['label' => 'Dashboard', 'icon' => 'speedometer2', 'route' => $dashboardRoute, 'active' => $dashboardRoute],
             ['label' => 'Profil', 'icon' => 'person', 'route' => 'admin.profile.edit', 'active' => 'admin.profile.*'],
-            ['label' => 'Riwayat', 'icon' => 'clock-history', 'route' => 'admin.history', 'active' => 'admin.history'],
+            ['label' => 'Riwayat Aktivitas', 'icon' => 'clock-history', 'route' => 'admin.history', 'active' => 'admin.history'],
             ['label' => 'Manajemen E-Learning', 'icon' => 'play-btn', 'route' => 'admin.materials.index', 'active' => 'admin.materials.*'],
             ['label' => 'Manajemen Kuis', 'icon' => 'patch-question', 'route' => 'admin.quizzes.index', 'active' => 'admin.quizzes.*'],
             ['label' => 'Manajemen Kegiatan', 'icon' => 'calendar-event', 'route' => 'admin.events.index', 'active' => 'admin.events.*'],
@@ -41,7 +41,7 @@
                 <a href="{{ route('home') }}" class="brand-logo fs-4 text-decoration-none d-none d-lg-block px-2 mb-4">Abis<span>Lulus</span></a>
 
                 <div class="d-flex align-items-center gap-3 px-2 pb-3 mb-2 border-bottom">
-                    <span class="avatar avatar-lg">{{ mb_strtoupper(mb_substr($user?->name ?? 'A', 0, 1)) }}</span>
+                    @include('partials.avatar', ['user' => $user, 'size' => 'lg', 'class' => 'flex-shrink-0'])
                     <div class="overflow-hidden">
                         <div class="fw-semibold text-truncate">{{ $user?->name ?? 'Admin' }}</div>
                         <span class="badge text-bg-primary bg-opacity-75">{{ $roleLabel }}</span>
