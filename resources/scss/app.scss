@@ -1,0 +1,176 @@
+// =========================================================
+// AbisLulus — tema Bootstrap 5 (PRD §8.3)
+// =========================================================
+
+// --- Variabel (harus sebelum import Bootstrap) ---
+$primary: #2563EB;
+$success: #16A34A;
+$danger: #DC2626;
+$info: #0EA5E9;
+
+$body-bg: #F5F7FB;
+$body-color: #1F2937;
+
+$font-family-sans-serif: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$headings-font-weight: 600;
+
+$border-radius: .625rem;
+$border-radius-sm: .5rem;
+$border-radius-lg: 1rem;
+
+$box-shadow-sm: 0 1px 3px rgba(15, 23, 42, .06), 0 1px 2px rgba(15, 23, 42, .04);
+$box-shadow: 0 4px 16px rgba(15, 23, 42, .08);
+
+$card-border-width: 0;
+$card-box-shadow: $box-shadow-sm;
+
+$btn-font-weight: 500;
+$btn-padding-x: 1.25rem;
+
+$navbar-light-active-color: $primary;
+
+@import 'bootstrap/scss/bootstrap';
+
+// --- Komponen umum ---
+.card {
+    box-shadow: $box-shadow-sm;
+}
+
+.section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: .5rem;
+}
+
+.icon-box {
+    width: 3.25rem;
+    height: 3.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius;
+    font-size: 1.5rem;
+}
+
+.avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    background-color: tint-color($primary, 85%);
+    color: $primary;
+    object-fit: cover;
+
+    &.avatar-lg {
+        width: 4rem;
+        height: 4rem;
+        font-size: 1.5rem;
+    }
+}
+
+// Aksi tabel: ikon lingkaran (lihat biru, edit hijau, hapus merah)
+.btn-icon {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    color: $white;
+
+    &:hover { color: $white; filter: brightness(.92); }
+
+    &.btn-icon-view { background-color: $primary; }
+    &.btn-icon-edit { background-color: $success; }
+    &.btn-icon-delete { background-color: $danger; }
+}
+
+// --- Layout publik ---
+.navbar-public {
+    background-color: $white;
+    box-shadow: $box-shadow-sm;
+
+    .nav-link {
+        font-weight: 500;
+
+        &.active { color: $primary; }
+    }
+}
+
+.brand-logo {
+    font-weight: 700;
+    color: $primary;
+
+    span { color: $body-color; }
+}
+
+.hero {
+    background: linear-gradient(135deg, tint-color($primary, 92%) 0%, $white 100%);
+}
+
+.site-footer {
+    background-color: #0F172A;
+    color: rgba($white, .7);
+
+    a {
+        color: rgba($white, .7);
+        text-decoration: none;
+
+        &:hover { color: $white; }
+    }
+
+    .brand-logo span { color: $white; }
+}
+
+// --- Layout panel ---
+.panel-sidebar {
+    background-color: $white;
+    box-shadow: $box-shadow-sm;
+
+    @include media-breakpoint-up(lg) {
+        width: 260px;
+        min-height: 100vh;
+        position: sticky;
+        top: 0;
+        flex-shrink: 0;
+    }
+
+    .nav-link {
+        color: $body-color;
+        border-radius: $border-radius;
+        padding: .6rem .9rem;
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+
+        &:hover { background-color: $gray-100; }
+
+        &.active {
+            background-color: tint-color($primary, 90%);
+            color: $primary;
+            font-weight: 500;
+        }
+    }
+
+    .nav-heading {
+        font-size: .75rem;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: $gray-500;
+        padding: 1rem .9rem .25rem;
+    }
+}
+
+.panel-topbar {
+    background-color: $white;
+    box-shadow: $box-shadow-sm;
+}
