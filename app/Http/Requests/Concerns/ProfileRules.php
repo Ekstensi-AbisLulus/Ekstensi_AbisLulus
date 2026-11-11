@@ -43,6 +43,34 @@ trait ProfileRules
     }
 
     /**
+     * Ubah password: password lama wajib & cocok, password baru min. 8 karakter & dikonfirmasi.
+     *
+     * @return array<string, list<string>>
+     */
+    protected function passwordUpdateRules(): array
+    {
+        return [
+            'current_password' => ['required', 'string', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'different:current_password'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function passwordUpdateMessages(): array
+    {
+        return [
+            'current_password.required' => 'Password lama wajib diisi.',
+            'current_password.current_password' => 'Password lama tidak sesuai.',
+            'password.required' => 'Password baru wajib diisi.',
+            'password.min' => 'Password baru minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+            'password.different' => 'Password baru harus berbeda dari password lama.',
+        ];
+    }
+
+    /**
      * Rapikan No. HP sebelum divalidasi: buang spasi, tanda hubung, titik, dan kurung.
      */
     protected function normalizePhone(): void

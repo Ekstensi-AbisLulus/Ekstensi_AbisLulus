@@ -39,6 +39,12 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <div id="avatarHelp" class="form-text">Format JPG/PNG, maksimal 2 MB. Kosongkan bila tidak ingin mengganti.</div>
+
+                                @if ($profile->avatar_path)
+                                    <button type="button" class="btn btn-sm btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#deleteAvatarModal">
+                                        <i class="bi bi-trash3 me-1"></i>Hapus Foto
+                                    </button>
+                                @endif
                             </div>
                         </div>
 
@@ -97,6 +103,83 @@
                     </form>
                 </div>
             </div>
+
+            {{-- PBI-08: Ubah Password --}}
+            <div class="card mt-4" id="ubah-password">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-semibold mb-1">Ubah Password</h2>
+                    <p class="text-secondary small mb-4">Masukkan password lama untuk mengonfirmasi bahwa ini memang kamu.</p>
+
+                    <form method="POST" action="{{ route('admin.profile.password.update') }}" novalidate>
+                        @csrf
+                        @method('PUT')
+
+                        @php
+                            $passwordFields = [
+                                ['name' => 'current_password', 'label' => 'Password Lama', 'autocomplete' => 'current-password', 'col' => 'col-12 col-md-6'],
+                                ['name' => 'password', 'label' => 'Password Baru', 'autocomplete' => 'new-password', 'col' => 'col-md-6', 'hint' => 'Minimal 8 karakter.'],
+                                ['name' => 'password_confirmation', 'label' => 'Konfirmasi Password Baru', 'autocomplete' => 'new-password', 'col' => 'col-md-6'],
+                            ];
+                        @endphp
+
+                        <div class="row g-3">
+                            @foreach ($passwordFields as $field)
+                                @if ($loop->index === 1)
+                                    <div class="w-100 d-none d-md-block m-0"></div>
+                                @endif
+                                <div class="{{ $field['col'] }}">
+                                    <label for="{{ $field['name'] }}" class="form-label fw-medium">{{ $field['label'] }} <span class="text-danger">*</span></label>
+                                    <div class="input-group has-validation">
+                                        <input type="password" class="form-control @error($field['name'], 'updatePassword') is-invalid @enderror"
+                                            id="{{ $field['name'] }}" name="{{ $field['name'] }}" autocomplete="{{ $field['autocomplete'] }}" required>
+                                        <button type="button" class="btn btn-outline-secondary" data-password-toggle="{{ $field['name'] }}"
+                                            aria-controls="{{ $field['name'] }}" aria-label="Tampilkan password" aria-pressed="false">
+                                            <i class="bi bi-eye" aria-hidden="true"></i>
+                                        </button>
+                                        @error($field['name'], 'updatePassword')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    @isset($field['hint'])
+                                        <div class="form-text">{{ $field['hint'] }}</div>
+                                    @endisset
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-shield-lock me-1"></i>Ubah Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+
+    {{-- PBI-08: Modal konfirmasi hapus foto (form terpisah, tidak bersarang di form profil) --}}
+    @if ($profile->avatar_path)
+        <div class="modal fade" id="deleteAvatarModal" tabindex="-1" aria-labelledby="deleteAvatarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0">
+                    <div class="modal-header border-0 pb-0">
+                        <h2 class="modal-title h5" id="deleteAvatarModalLabel">Hapus foto profil?</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        Foto profilmu akan dihapus dan diganti dengan avatar default (inisial nama).
+                    </div>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <form method="POST" action="{{ route('admin.profile.avatar.destroy') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash3 me-1"></i>Hapus Foto</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection

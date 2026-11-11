@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdatePasswordRequest;
 use App\Http\Requests\Admin\UpdateProfileRequest;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -68,6 +69,41 @@ class ProfileController extends Controller
         }
 
         return back()->with('success', 'Profil berhasil disimpan');
+    }
+
+    /**
+     * PBI-08 — ubah password (password lama wajib & cocok, divalidasi di FormRequest).
+     */
+    public function updatePassword(UpdatePasswordRequest $request): RedirectResponse
+    {
+        $user = $request->user()->load('profile');
+
+        $this->authorize('update', $this->profileOf($user));
+
+        $user->update(['password' => $request->validated('password')]);
+
+        return back()->with('success', 'Password berhasil diubah');
+    }
+
+    /**
+     * PBI-08 — hapus foto profil, kembali ke avatar default (inisial).
+     */
+    public function destroyAvatar(Request $request): RedirectResponse
+    {
+        $user = $request->user()->load('profile');
+        $profile = $this->profileOf($user);
+
+        $this->authorize('update', $profile);
+
+        if (! $profile->avatar_path) {
+            return back()->with('error', 'Belum ada foto profil yang bisa dihapus.');
+        }
+
+        $oldAvatar = $profile->avatar_path;
+        $profile->update(['avatar_path' => null]);
+        Storage::disk('public')->delete($oldAvatar);
+
+        return back()->with('success', 'Foto profil berhasil dihapus');
     }
 
     /**

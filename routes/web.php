@@ -94,6 +94,8 @@ Route::middleware(['auth', 'role:admin,super_admin'])
         Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::get('/profil', [Admin\ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profil', [Admin\ProfileController::class, 'update'])->name('profile.update');
+        Route::put('/profil/password', [Admin\ProfileController::class, 'updatePassword'])->name('profile.password.update');
+        Route::delete('/profil/foto', [Admin\ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
         Route::get('/riwayat', [Admin\HistoryController::class, 'index'])->name('history');
 
         Route::resource('materials', Admin\MaterialController::class);
