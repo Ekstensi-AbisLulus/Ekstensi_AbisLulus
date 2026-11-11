@@ -17,7 +17,9 @@
 
     <nav class="navbar navbar-expand-lg navbar-light navbar-public sticky-top py-3">
         <div class="container">
-            <a class="navbar-brand brand-logo fs-4" href="{{ route('home') }}">Abis<span>Lulus</span></a>
+            <a class="navbar-brand py-0" href="{{ route('home') }}">
+                <img src="{{ asset('images/logo-abislulus.png') }}" alt="AbisLulus" class="navbar-logo" width="797" height="531">
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavbar"
                 aria-controls="publicNavbar" aria-expanded="false" aria-label="Buka menu">

@@ -106,6 +106,13 @@ $navbar-light-active-color: $primary;
     }
 }
 
+// Kanvas logo punya ruang transparan kiri-kanan; object-fit memotongnya agar logo tampil lebih besar.
+.navbar-logo {
+    height: 60px;
+    width: 76px;
+    object-fit: cover;
+}
+
 .brand-logo {
     font-weight: 700;
     color: $primary;
