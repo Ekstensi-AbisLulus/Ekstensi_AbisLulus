@@ -79,6 +79,18 @@ class User extends Authenticatable
         return $this->status === UserStatus::Active;
     }
 
+    /**
+     * Nama route tujuan setelah login (PBI-02).
+     */
+    public function homeRoute(): string
+    {
+        return match ($this->role) {
+            UserRole::SuperAdmin => 'super-admin.dashboard',
+            UserRole::Admin => 'admin.dashboard',
+            default => 'home',
+        };
+    }
+
     public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);

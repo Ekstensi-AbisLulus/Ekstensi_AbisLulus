@@ -5,18 +5,19 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     @php
+        // 'active' = pola nama route (request()->routeIs) untuk menandai menu aktif.
         $menu = [
-            ['label' => 'Home', 'url' => '/', 'pattern' => '/'],
-            ['label' => 'E-Learning', 'url' => '/e-learning', 'pattern' => 'e-learning*'],
-            ['label' => 'Kegiatan', 'url' => '/kegiatan', 'pattern' => 'kegiatan*'],
-            ['label' => 'Artikel', 'url' => '/artikel', 'pattern' => 'artikel*'],
-            ['label' => 'Tentang Kami', 'url' => '/tentang', 'pattern' => 'tentang'],
+            ['label' => 'Home', 'route' => 'home', 'active' => 'home'],
+            ['label' => 'E-Learning', 'route' => 'materials.index', 'active' => 'materials.*'],
+            ['label' => 'Kegiatan', 'route' => 'events.index', 'active' => 'events.index'],
+            ['label' => 'Artikel', 'route' => 'articles.index', 'active' => 'articles.*'],
+            ['label' => 'Tentang Kami', 'route' => 'about', 'active' => 'about'],
         ];
     @endphp
 
     <nav class="navbar navbar-expand-lg navbar-light navbar-public sticky-top py-3">
         <div class="container">
-            <a class="navbar-brand brand-logo fs-4" href="{{ url('/') }}">Abis<span>Lulus</span></a>
+            <a class="navbar-brand brand-logo fs-4" href="{{ route('home') }}">Abis<span>Lulus</span></a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavbar"
                 aria-controls="publicNavbar" aria-expanded="false" aria-label="Buka menu">
@@ -27,17 +28,17 @@
                 <ul class="navbar-nav mx-auto mb-3 mb-lg-0 gap-lg-2">
                     @foreach ($menu as $item)
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is($item['pattern']) ? 'active' : '' }}"
-                                href="{{ url($item['url']) }}"
-                                @if (request()->is($item['pattern'])) aria-current="page" @endif>{{ $item['label'] }}</a>
+                            <a class="nav-link {{ request()->routeIs($item['active']) ? 'active' : '' }}"
+                                href="{{ route($item['route']) }}"
+                                @if (request()->routeIs($item['active'])) aria-current="page" @endif>{{ $item['label'] }}</a>
                         </li>
                     @endforeach
                 </ul>
 
                 @guest
                     <div class="d-flex gap-2">
-                        <a href="{{ url('/login') }}" class="btn btn-outline-primary">Masuk</a>
-                        <a href="{{ url('/register') }}" class="btn btn-primary">Daftar</a>
+                        <a href="{{ route('login') }}" class="btn btn-outline-primary">Masuk</a>
+                        <a href="{{ route('register') }}" class="btn btn-primary">Daftar</a>
                     </div>
                 @endguest
 
@@ -49,11 +50,15 @@
                             <span class="fw-medium">{{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                            <li><a class="dropdown-item" href="{{ url('/profil') }}"><i class="bi bi-person me-2"></i>Profil</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/profil/riwayat/e-learning') }}"><i class="bi bi-clock-history me-2"></i>Riwayat</a></li>
+                            @if (auth()->user()->isUser())
+                                <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="{{ route('profile.history.learning') }}"><i class="bi bi-clock-history me-2"></i>Riwayat</a></li>
+                            @else
+                                <li><a class="dropdown-item" href="{{ route(auth()->user()->homeRoute()) }}"><i class="bi bi-speedometer2 me-2"></i>Panel Admin</a></li>
+                            @endif
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form method="POST" action="{{ url('/logout') }}">
+                                <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Keluar</button>
                                 </form>
@@ -79,7 +84,7 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-5">
-                    <a class="brand-logo fs-4 text-decoration-none" href="{{ url('/') }}">Abis<span>Lulus</span></a>
+                    <a class="brand-logo fs-4 text-decoration-none" href="{{ route('home') }}">Abis<span>Lulus</span></a>
                     <p class="mt-3 mb-0 small">
                         Platform E-Learning &amp; Career Mentoring gratis untuk lulusan SMA/SMK dan fresh graduate
                         agar siap melangkah ke dunia kerja.
@@ -89,7 +94,7 @@
                     <h6 class="text-white mb-3">Jelajahi</h6>
                     <ul class="list-unstyled small d-grid gap-2 mb-0">
                         @foreach ($menu as $item)
-                            <li><a href="{{ url($item['url']) }}">{{ $item['label'] }}</a></li>
+                            <li><a href="{{ route($item['route']) }}">{{ $item['label'] }}</a></li>
                         @endforeach
                     </ul>
                 </div>

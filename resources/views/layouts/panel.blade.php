@@ -8,20 +8,23 @@
         $user = auth()->user();
         $isSuperAdmin = (bool) $user?->isSuperAdmin();
 
+        // 'active' = pola nama route (request()->routeIs) untuk menandai menu aktif.
+        $dashboardRoute = $isSuperAdmin ? 'super-admin.dashboard' : 'admin.dashboard';
+
         $adminMenu = [
-            ['label' => 'Dashboard', 'icon' => 'speedometer2', 'url' => '/admin/dashboard', 'pattern' => 'admin/dashboard'],
-            ['label' => 'Profil', 'icon' => 'person', 'url' => '/admin/profil', 'pattern' => 'admin/profil*'],
-            ['label' => 'Riwayat', 'icon' => 'clock-history', 'url' => '/admin/riwayat', 'pattern' => 'admin/riwayat*'],
-            ['label' => 'Manajemen E-Learning', 'icon' => 'play-btn', 'url' => '/admin/materials', 'pattern' => 'admin/materials*'],
-            ['label' => 'Manajemen Kuis', 'icon' => 'patch-question', 'url' => '/admin/quizzes', 'pattern' => 'admin/quizzes*'],
-            ['label' => 'Manajemen Kegiatan', 'icon' => 'calendar-event', 'url' => '/admin/events', 'pattern' => 'admin/events*'],
+            ['label' => 'Dashboard', 'icon' => 'speedometer2', 'route' => $dashboardRoute, 'active' => $dashboardRoute],
+            ['label' => 'Profil', 'icon' => 'person', 'route' => 'admin.profile.edit', 'active' => 'admin.profile.*'],
+            ['label' => 'Riwayat', 'icon' => 'clock-history', 'route' => 'admin.history', 'active' => 'admin.history'],
+            ['label' => 'Manajemen E-Learning', 'icon' => 'play-btn', 'route' => 'admin.materials.index', 'active' => 'admin.materials.*'],
+            ['label' => 'Manajemen Kuis', 'icon' => 'patch-question', 'route' => 'admin.quizzes.index', 'active' => 'admin.quizzes.*'],
+            ['label' => 'Manajemen Kegiatan', 'icon' => 'calendar-event', 'route' => 'admin.events.index', 'active' => 'admin.events.*'],
         ];
 
         $superAdminMenu = [
-            ['label' => 'Manajemen Akun Admin', 'icon' => 'people', 'url' => '/super-admin/admins', 'pattern' => 'super-admin/admins*'],
-            ['label' => 'Hero Section', 'icon' => 'image', 'url' => '/super-admin/hero-sections', 'pattern' => 'super-admin/hero-sections*'],
-            ['label' => 'Artikel', 'icon' => 'newspaper', 'url' => '/super-admin/articles', 'pattern' => 'super-admin/articles*'],
-            ['label' => 'Testimoni', 'icon' => 'chat-quote', 'url' => '/super-admin/testimonials', 'pattern' => 'super-admin/testimonials*'],
+            ['label' => 'Manajemen Akun Admin', 'icon' => 'people', 'route' => 'super-admin.admins.index', 'active' => 'super-admin.admins.*'],
+            ['label' => 'Hero Section', 'icon' => 'image', 'route' => 'super-admin.hero-sections.index', 'active' => 'super-admin.hero-sections.*'],
+            ['label' => 'Artikel', 'icon' => 'newspaper', 'route' => 'super-admin.articles.index', 'active' => 'super-admin.articles.*'],
+            ['label' => 'Testimoni', 'icon' => 'chat-quote', 'route' => 'super-admin.testimonials.index', 'active' => 'super-admin.testimonials.*'],
         ];
 
         $roleLabel = $user?->role?->label() ?? 'Admin';
@@ -35,7 +38,7 @@
             </div>
 
             <div class="offcanvas-body d-flex flex-column p-3 h-100">
-                <a href="{{ url('/') }}" class="brand-logo fs-4 text-decoration-none d-none d-lg-block px-2 mb-4">Abis<span>Lulus</span></a>
+                <a href="{{ route('home') }}" class="brand-logo fs-4 text-decoration-none d-none d-lg-block px-2 mb-4">Abis<span>Lulus</span></a>
 
                 <div class="d-flex align-items-center gap-3 px-2 pb-3 mb-2 border-bottom">
                     <span class="avatar avatar-lg">{{ mb_strtoupper(mb_substr($user?->name ?? 'A', 0, 1)) }}</span>
@@ -47,7 +50,7 @@
 
                 <nav class="nav flex-column gap-1">
                     @foreach ($adminMenu as $item)
-                        <a class="nav-link {{ request()->is($item['pattern']) ? 'active' : '' }}" href="{{ url($item['url']) }}">
+                        <a class="nav-link {{ request()->routeIs($item['active']) ? 'active' : '' }}" href="{{ route($item['route']) }}">
                             <i class="bi bi-{{ $item['icon'] }}"></i>{{ $item['label'] }}
                         </a>
                     @endforeach
@@ -55,14 +58,14 @@
                     @if ($isSuperAdmin)
                         <div class="nav-heading">Super Admin</div>
                         @foreach ($superAdminMenu as $item)
-                            <a class="nav-link {{ request()->is($item['pattern']) ? 'active' : '' }}" href="{{ url($item['url']) }}">
+                            <a class="nav-link {{ request()->routeIs($item['active']) ? 'active' : '' }}" href="{{ route($item['route']) }}">
                                 <i class="bi bi-{{ $item['icon'] }}"></i>{{ $item['label'] }}
                             </a>
                         @endforeach
                     @endif
                 </nav>
 
-                <form method="POST" action="{{ url('/logout') }}" class="mt-auto pt-4">
+                <form method="POST" action="{{ route('logout') }}" class="mt-auto pt-4">
                     @csrf
                     <button type="submit" class="btn btn-outline-danger w-100"><i class="bi bi-box-arrow-right me-2"></i>Keluar</button>
                 </form>

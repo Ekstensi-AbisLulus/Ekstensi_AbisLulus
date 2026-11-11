@@ -17,8 +17,8 @@
                         dan ikuti Career Mentoring bersama praktisi — semuanya dalam satu platform.
                     </p>
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ url('/e-learning') }}" class="btn btn-primary btn-lg">Mulai Belajar</a>
-                        <a href="{{ url('/kegiatan') }}" class="btn btn-outline-primary btn-lg">Lihat Kegiatan</a>
+                        <a href="{{ route('materials.index') }}" class="btn btn-primary btn-lg">Mulai Belajar</a>
+                        <a href="{{ route('events.index') }}" class="btn btn-outline-primary btn-lg">Lihat Kegiatan</a>
                     </div>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block">
@@ -44,7 +44,7 @@
                         <div class="icon-box bg-primary bg-opacity-10 text-primary mb-3"><i class="bi bi-play-btn"></i></div>
                         <h3 class="h5">E-Learning</h3>
                         <p class="text-secondary">Materi video pilihan dilengkapi kuis untuk mengukur pemahaman, plus rating &amp; ulasan dari pengguna lain.</p>
-                        <a href="{{ url('/e-learning') }}" class="link-primary fw-medium text-decoration-none mt-auto">Jelajahi materi <i class="bi bi-arrow-right"></i></a>
+                        <a href="{{ route('materials.index') }}" class="link-primary fw-medium text-decoration-none mt-auto">Jelajahi materi <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -52,7 +52,7 @@
                         <div class="icon-box bg-success bg-opacity-10 text-success mb-3"><i class="bi bi-people"></i></div>
                         <h3 class="h5">Career Mentoring</h3>
                         <p class="text-secondary">Ikuti webinar dan sesi mentoring daring via Zoom/Google Meet bersama praktisi dan komunitas.</p>
-                        <a href="{{ url('/kegiatan') }}" class="link-primary fw-medium text-decoration-none mt-auto">Lihat kegiatan <i class="bi bi-arrow-right"></i></a>
+                        <a href="{{ route('events.index') }}" class="link-primary fw-medium text-decoration-none mt-auto">Lihat kegiatan <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
