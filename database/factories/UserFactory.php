@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -18,8 +21,6 @@ class UserFactory extends Factory
     protected static ?string $password;
 
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -29,13 +30,35 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => UserRole::User,
+            'status' => UserStatus::Active,
             'remember_token' => Str::random(10),
         ];
     }
 
+    public function admin(): static
+    {
+        return $this->state(fn () => ['role' => UserRole::Admin]);
+    }
+
+    public function superAdmin(): static
+    {
+        return $this->state(fn () => ['role' => UserRole::SuperAdmin]);
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn () => ['status' => UserStatus::Inactive]);
+    }
+
     /**
-     * Indicate that the model's email address should be unverified.
+     * Buat baris user_profiles kosong/terisi untuk user ini.
      */
+    public function withProfile(array $attributes = []): static
+    {
+        return $this->has(UserProfile::factory()->state($attributes), 'profile');
+    }
+
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
