@@ -22,9 +22,39 @@ class LoginTest extends TestCase
     {
         $this->get('/login')
             ->assertOk()
+            ->assertSee('Masuk ke AbisLulus')
+            ->assertSee('Selamat datang kembali!')
             ->assertSee('Ingat saya')
-            ->assertSee('Lupa password?')
-            ->assertSee('Daftar sekarang');
+            ->assertSee('data-password-toggle="password"', false)
+            ->assertSee('images/auth-illustration.png', false)
+            ->assertSee('href="'.route('password.request').'"', false)
+            ->assertSee('href="'.route('register').'"', false);
+    }
+
+    public function test_login_page_shows_status_message(): void
+    {
+        $this->withSession(['status' => 'Password berhasil diubah. Silakan masuk dengan password baru.'])
+            ->get('/login')
+            ->assertSee('Password berhasil diubah. Silakan masuk dengan password baru.');
+    }
+
+    public function test_remember_me_sets_recaller_cookie(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/login', ['email' => $user->email, 'password' => 'password', 'remember' => '1']);
+
+        $response->assertCookie(auth()->guard()->getRecallerName());
+        $this->assertNotNull($user->fresh()->remember_token);
+    }
+
+    public function test_email_is_case_insensitive(): void
+    {
+        $user = User::factory()->create(['email' => 'siti@example.com']);
+
+        $this->post('/login', ['email' => '  Siti@Example.com ', 'password' => 'password'])->assertRedirect('/');
+
+        $this->assertAuthenticatedAs($user);
     }
 
     /**

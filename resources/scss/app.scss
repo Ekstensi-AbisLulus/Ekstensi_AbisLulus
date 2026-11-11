@@ -131,6 +131,289 @@ $navbar-light-active-color: $primary;
     .brand-logo span { color: $white; }
 }
 
+// --- Halaman auth (Masuk / Daftar / Lupa Password) ---
+$auth-navy: #0B2A6F;   // biru tua logo
+$auth-accent: #F59E0B; // oranye ilustrasi
+
+.auth-page {
+    background-color: $white;
+}
+
+// Panel kiri
+.auth-aside {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 2rem 3rem;
+    background: linear-gradient(160deg, #EEF4FF 0%, #DCE8FF 55%, #C9DCFF 100%);
+}
+
+.auth-blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+
+    &.auth-blob-1 {
+        width: 420px;
+        height: 420px;
+        top: -140px;
+        right: -120px;
+        background: radial-gradient(circle, rgba($primary, .18) 0%, rgba($primary, 0) 70%);
+    }
+
+    &.auth-blob-2 {
+        width: 360px;
+        height: 360px;
+        bottom: -120px;
+        left: -100px;
+        background: radial-gradient(circle, rgba($auth-accent, .22) 0%, rgba($auth-accent, 0) 70%);
+    }
+}
+
+.auth-aside-logo {
+    position: relative;
+    align-self: flex-start;
+}
+
+.auth-aside-body {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+.auth-greeting {
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    font-weight: 700;
+    color: $auth-navy;
+    max-width: 26rem;
+    margin-bottom: .5rem;
+}
+
+.auth-tagline {
+    color: $gray-600;
+    max-width: 24rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-illustration {
+    width: min(100%, 400px);
+    height: auto;
+    filter: drop-shadow(0 18px 30px rgba($auth-navy, .15));
+    animation: auth-float 6s ease-in-out infinite;
+}
+
+@keyframes auth-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-illustration { animation: none; }
+}
+
+.auth-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .6rem;
+    margin: 1.75rem 0 0;
+
+    li {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        padding: .45rem .9rem;
+        border-radius: 50rem;
+        background-color: rgba($white, .8);
+        box-shadow: $box-shadow-sm;
+        font-size: .85rem;
+        font-weight: 500;
+        color: $auth-navy;
+    }
+
+    i { color: $primary; }
+}
+
+// Panel kanan (form)
+.auth-form {
+    max-width: 400px;
+
+    .auth-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: $auth-navy;
+        margin-bottom: .25rem;
+    }
+
+    .auth-subtitle {
+        color: $gray-600;
+        font-size: .9rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .auth-label {
+        display: block;
+        font-size: .85rem;
+        font-weight: 500;
+        margin-bottom: .35rem;
+    }
+
+    .btn-auth {
+        height: 50px;
+        border-radius: .75rem;
+        font-weight: 600;
+        box-shadow: 0 8px 20px rgba($primary, .25);
+        transition: transform .15s ease, box-shadow .15s ease;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba($primary, .32);
+        }
+    }
+
+    .auth-footnote {
+        font-size: .9rem;
+        color: $gray-600;
+
+        a {
+            color: $primary;
+            font-weight: 600;
+            text-decoration: none;
+
+            &:hover { text-decoration: underline; }
+        }
+    }
+
+    .auth-terms {
+        font-size: .8rem;
+        color: $gray-500;
+
+        strong { color: $gray-700; }
+    }
+}
+
+// Input dengan ikon kiri + tombol mata kanan
+.auth-field {
+    position: relative;
+
+    .form-control {
+        height: 50px;
+        padding-left: 2.85rem;
+        border-radius: .75rem;
+        border-color: $gray-300;
+        background-color: $gray-100;
+        font-size: .95rem;
+        transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+
+        &::placeholder { color: $gray-500; }
+
+        &:focus {
+            background-color: $white;
+            border-color: $primary;
+            box-shadow: 0 0 0 .2rem rgba($primary, .15);
+        }
+
+        &[readonly] {
+            background-color: $gray-200;
+            color: $gray-700;
+        }
+
+        // Ikon "!" bawaan Bootstrap tidak dipakai agar tidak bertabrakan dengan tombol mata.
+        &.is-invalid {
+            background-image: none;
+            padding-right: .75rem;
+        }
+    }
+
+    &.has-toggle .form-control,
+    &.has-toggle .form-control.is-invalid {
+        padding-right: 3rem;
+    }
+
+    .auth-field-icon {
+        position: absolute;
+        top: 50%;
+        left: 1rem;
+        transform: translateY(-50%);
+        color: $gray-500;
+        pointer-events: none;
+        transition: color .15s ease;
+    }
+
+    &:focus-within .auth-field-icon { color: $primary; }
+    .is-invalid ~ .auth-field-icon,
+    &:has(.is-invalid) .auth-field-icon { color: $danger; }
+}
+
+.auth-toggle-password {
+    position: absolute;
+    top: 50%;
+    right: .5rem;
+    transform: translateY(-50%);
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: .5rem;
+    background: transparent;
+    color: $gray-500;
+    font-size: 1.1rem;
+
+    &:hover { color: $primary; background-color: rgba($primary, .08); }
+    &:focus-visible { outline: 2px solid $primary; outline-offset: 1px; }
+}
+
+.auth-icon-badge {
+    width: 3.25rem;
+    height: 3.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    background-color: tint-color($primary, 88%);
+    color: $primary;
+    font-size: 1.5rem;
+}
+
+.auth-copyright {
+    font-size: .8rem;
+    color: $gray-500;
+
+    a { color: inherit; }
+}
+
+.auth-logo-sm { height: 72px; }
+.auth-logo-lg { max-width: 100%; width: 380px; }
+
+.auth-logo-fallback {
+    display: inline-block;
+    text-align: center;
+    line-height: 1.1;
+
+    i { color: $primary; }
+
+    &.auth-logo-fallback-sm {
+        font-size: 1.25rem;
+        i { font-size: 1.75rem; }
+    }
+
+    &.auth-logo-fallback-lg {
+        font-size: 3.5rem;
+        i { font-size: 8rem; }
+        small { font-size: 1.1rem; margin-top: .5rem; }
+    }
+}
+
 // --- Layout panel ---
 .panel-sidebar {
     background-color: $white;

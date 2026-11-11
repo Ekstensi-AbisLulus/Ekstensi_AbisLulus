@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
+use App\Notifications\ResetPasswordNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -89,6 +90,14 @@ class User extends Authenticatable
             UserRole::Admin => 'admin.dashboard',
             default => 'home',
         };
+    }
+
+    /**
+     * Kirim email reset password berbahasa Indonesia (PBI-03).
+     */
+    public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
     public function profile(): HasOne
