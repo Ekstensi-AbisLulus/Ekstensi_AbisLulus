@@ -81,8 +81,8 @@ class EditProfileTest extends TestCase
             ])
             ->assertOk()
             ->assertSee('Profil berhasil disimpan')
-            // Sidebar panel + kartu profil langsung memakai nama baru.
-            ->assertSeeInOrder(['Nama Terbaru', 'Dashboard', 'Nama Terbaru', 'Profil Admin'])
+            // Sidebar panel + form profil langsung memakai nama baru.
+            ->assertSeeInOrder(['Nama Terbaru', 'Dashboard', 'Profil Admin', 'Nama Terbaru'])
             ->assertDontSee('Nama Lama');
 
         $this->assertDatabaseHas('users', ['id' => $admin->id, 'name' => 'Nama Terbaru']);
