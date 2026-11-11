@@ -73,6 +73,31 @@ $navbar-light-active-color: $primary;
         height: 4rem;
         font-size: 1.5rem;
     }
+
+    &.avatar-xl {
+        width: 6rem;
+        height: 6rem;
+        font-size: 2.25rem;
+        box-shadow: 0 0 0 4px $white, 0 0 0 5px tint-color($primary, 75%);
+    }
+}
+
+// Kartu menu di halaman profil & riwayat admin
+.profile-nav .nav-link {
+    color: $body-color;
+    border-radius: $border-radius;
+    padding: .6rem .9rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    &:hover { background-color: $gray-100; }
+
+    &.active {
+        background-color: tint-color($primary, 90%);
+        color: $primary;
+        font-weight: 500;
+    }
 }
 
 // Aksi tabel: ikon lingkaran (lihat biru, edit hijau, hapus merah)

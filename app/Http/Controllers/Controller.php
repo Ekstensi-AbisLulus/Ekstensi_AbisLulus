@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 abstract class Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Halaman sementara (layout publik) untuk fitur yang belum diimplementasikan.
      */
