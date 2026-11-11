@@ -39,14 +39,35 @@ class PembelajaranController extends Controller
         return redirect()->route('pembelajaran.index')->with('success', 'Pembelajaran berhasil ditambahkan.');
     }
 
-    public function edit()
+    public function edit($id)
     {
-        
+        $pembelajaran = Pembelajaran::findOrFail($id);
+        return view('admin.pembelajaran.edit', compact('pembelajaran'));
     }
 
-    public function update()
+    public function update(Request $request, $id)
     {
-       
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'kategori' => 'required',
+            'deskripsi' => 'required|string',
+            'link_video' => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        $pembelajaran = Pembelajaran::findOrFail($id);
+
+        if ($request->hasFile('thumbnail')) {
+            if ($pembelajaran->thumbnail && Storage::disk('public')->exists($pembelajaran->thumbnail)) {
+                Storage::disk('public')->delete($pembelajaran->thumbnail);
+            }
+
+            $validated['thumbnail'] = $request->file('thumbnail')->store('pembelajaran', 'public');
+        }
+
+        $pembelajaran->update($validated);
+
+        return redirect()->route('pembelajaran.index')->with('success', 'Pembelajaran berhasil diperbarui.');
     }
 
     public function destroy()

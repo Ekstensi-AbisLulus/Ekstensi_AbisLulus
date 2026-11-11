@@ -12,6 +12,8 @@ Route::get('/', function () {
 Route::get('/pembelajaran', [AdminPembelajaranController::class, 'index'])->name('pembelajaran.index');
 Route::get('/pembelajaran/create', [AdminPembelajaranController::class, 'create'])->name('pembelajaran.create');
 Route::post('/pembelajaran', [AdminPembelajaranController::class, 'store'])->name('pembelajaran.store');
+Route::get('/pembelajaran/{id}/edit', [AdminPembelajaranController::class, 'edit'])->name('pembelajaran.edit');
+Route::put('/pembelajaran/{id}', [AdminPembelajaranController::class, 'update'])->name('pembelajaran.update');
 
 // Route untuk Pembelajaran (User)
 Route::get('/user/pembelajaran', [UserPembelajaranController::class, 'index'])->name('user.pembelajaran.index');
