@@ -44,7 +44,7 @@
                     <span class="avatar avatar-lg">{{ mb_strtoupper(mb_substr($user?->name ?? 'A', 0, 1)) }}</span>
                     <div class="overflow-hidden">
                         <div class="fw-semibold text-truncate">{{ $user?->name ?? 'Admin' }}</div>
-                        <span class="badge text-bg-primary bg-opacity-75">{{ $roleLabel }}</span>
+                        <span class="badge text-bg-primary">{{ $roleLabel }}</span>
                     </div>
                 </div>
 
@@ -67,16 +67,17 @@
 
                 <form method="POST" action="{{ route('logout') }}" class="mt-auto pt-4">
                     @csrf
-                    <button type="submit" class="btn btn-outline-danger w-100"><i class="bi bi-box-arrow-right me-2"></i>Keluar</button>
+                    <button type="submit" class="btn btn-outline-danger btn-panel w-100"><i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Keluar</button>
                 </form>
             </div>
         </aside>
 
         <div class="flex-grow-1 d-flex flex-column min-vh-100">
             <header class="panel-topbar px-3 px-lg-4 py-3 d-flex align-items-center gap-3">
-                <button class="btn btn-light d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelSidebar"
-                    aria-controls="panelSidebar" aria-label="Buka menu">
-                    <i class="bi bi-list fs-5"></i>
+                <button class="btn btn-light btn-panel d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelSidebar"
+                    aria-controls="panelSidebar" aria-label="Buka menu navigasi">
+                    <i class="bi bi-list fs-5" aria-hidden="true"></i>
+                    <span class="ms-1 small fw-medium">Menu</span>
                 </button>
                 <h1 class="h5 mb-0">@yield('page-title', 'Dashboard')</h1>
             </header>

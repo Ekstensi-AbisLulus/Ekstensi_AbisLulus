@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Article extends Model
@@ -77,5 +78,23 @@ class Article extends Model
     public function scopePublished(Builder $query): void
     {
         $query->where('status', ArticleStatus::Published);
+    }
+
+    /**
+     * URL tampilan sampul untuk path storage lokal maupun URL eksternal.
+     */
+    public function coverImageSrc(): ?string
+    {
+        if (blank($this->cover_image_url)) {
+            return null;
+        }
+
+        if (str_starts_with($this->cover_image_url, 'http://')
+            || str_starts_with($this->cover_image_url, 'https://')
+            || str_starts_with($this->cover_image_url, '/')) {
+            return $this->cover_image_url;
+        }
+
+        return Storage::disk('public')->url($this->cover_image_url);
     }
 }
