@@ -65,7 +65,7 @@ $navbar-light-active-color: $primary;
     justify-content: center;
     font-weight: 600;
     background-color: tint-color($primary, 85%);
-    color: $primary;
+    color: #1E40AF;
     object-fit: cover;
 
     &.avatar-lg {
@@ -422,6 +422,27 @@ $auth-accent: #F59E0B; // oranye ilustrasi
 }
 
 // --- Layout panel ---
+a[href],
+button:not(:disabled),
+select:not(:disabled),
+summary,
+label[for],
+input[type='checkbox']:not(:disabled),
+input[type='radio']:not(:disabled),
+input[type='file']:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
+.btn.disabled,
+[aria-disabled='true'] {
+    cursor: not-allowed;
+}
+
 .panel-sidebar {
     background-color: $white;
     box-shadow: $box-shadow-sm;
@@ -438,24 +459,31 @@ $auth-accent: #F59E0B; // oranye ilustrasi
         color: $body-color;
         border-radius: $border-radius;
         padding: .6rem .9rem;
+        min-height: 2.75rem;
         display: flex;
         align-items: center;
         gap: .75rem;
 
         &:hover { background-color: $gray-100; }
 
+        &:focus-visible {
+            outline: 2px solid $primary;
+            outline-offset: 2px;
+        }
+
         &.active {
             background-color: tint-color($primary, 90%);
-            color: $primary;
-            font-weight: 500;
+            color: #1E40AF;
+            font-weight: 600;
         }
     }
 
     .nav-heading {
         font-size: .75rem;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: .05em;
-        color: $gray-500;
+        letter-spacing: .04em;
+        color: #4B5563;
         padding: 1rem .9rem .25rem;
     }
 }
@@ -463,4 +491,128 @@ $auth-accent: #F59E0B; // oranye ilustrasi
 .panel-topbar {
     background-color: $white;
     box-shadow: $box-shadow-sm;
+}
+
+// --- Form & komponen panel Super Admin / Admin ---
+.panel-card {
+    background-color: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $box-shadow-sm;
+}
+
+.panel-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #0B2A6F;
+}
+
+.panel-muted {
+    color: #4B5563;
+}
+
+.panel-form-label {
+    display: inline-block;
+    font-size: .9rem;
+    font-weight: 600;
+    color: $body-color;
+    margin-bottom: .4rem;
+}
+
+.panel-form-control,
+.panel-form-select {
+    min-height: 2.75rem;
+    border-color: #6B7280;
+    color: $body-color;
+    font-size: .9375rem;
+
+    &::placeholder {
+        color: #4B5563;
+        opacity: 1;
+    }
+
+    &:hover:not(:disabled):not([readonly]) {
+        border-color: #374151;
+    }
+
+    &:focus {
+        border-color: $primary;
+        box-shadow: 0 0 0 .2rem rgba($primary, .2);
+    }
+
+    &[readonly] {
+        background-color: #F3F4F6;
+        color: #374151;
+    }
+}
+
+.btn-panel {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    font-weight: 500;
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+}
+
+.btn-outline-secondary.btn-panel {
+    border-color: #4B5563;
+    color: #1F2937;
+
+    &:hover,
+    &:active {
+        background-color: #1F2937;
+        border-color: #1F2937;
+        color: $white;
+    }
+}
+
+.panel-switch {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    .form-check-input {
+        width: 2.75rem;
+        height: 1.5rem;
+        margin-top: 0;
+        border-color: #6B7280;
+        flex-shrink: 0;
+
+        &:focus {
+            box-shadow: 0 0 0 .2rem rgba($primary, .25);
+        }
+    }
+}
+
+.image-preview-frame {
+    border: 1px dashed #6B7280;
+    border-radius: $border-radius;
+    background-color: #F8FAFC;
+    padding: 1rem;
+    text-align: center;
+}
+
+.image-preview-media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: $border-radius-sm;
+    background-color: #E2E8F0;
+}
+
+.slug-prefix {
+    background-color: #F3F4F6;
+    border-color: #6B7280;
+    color: #374151;
+    font-size: .875rem;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
 }

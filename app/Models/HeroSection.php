@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class HeroSection extends Model
 {
@@ -35,5 +36,19 @@ class HeroSection extends Model
     public function scopeActive(Builder $query): void
     {
         $query->where('is_active', true);
+    }
+
+    /**
+     * URL tampilan gambar untuk path storage lokal maupun URL eksternal.
+     */
+    public function imageSrc(): string
+    {
+        if (str_starts_with($this->image_url, 'http://')
+            || str_starts_with($this->image_url, 'https://')
+            || str_starts_with($this->image_url, '/')) {
+            return $this->image_url;
+        }
+
+        return Storage::disk('public')->url($this->image_url);
     }
 }
