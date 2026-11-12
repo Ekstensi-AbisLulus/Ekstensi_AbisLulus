@@ -5,11 +5,7 @@
 
 @section('content')
     <div class="row g-4">
-        <div class="col-lg-4 col-xl-3">
-            @include('admin.partials.profile-nav')
-        </div>
-
-        <div class="col-lg-8 col-xl-9">
+        <div class="col-12 col-xl-9">
             <div class="card">
                 <div class="card-body p-4">
                     <h2 class="h5 fw-semibold mb-1">Profil Admin</h2>

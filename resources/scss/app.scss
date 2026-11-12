@@ -91,24 +91,6 @@ $navbar-light-active-color: $primary;
     }
 }
 
-// Kartu menu di halaman profil & riwayat admin
-.profile-nav .nav-link {
-    color: $body-color;
-    border-radius: $border-radius;
-    padding: .6rem .9rem;
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-
-    &:hover { background-color: $gray-100; }
-
-    &.active {
-        background-color: tint-color($primary, 90%);
-        color: $primary;
-        font-weight: 500;
-    }
-}
-
 // Aksi tabel: ikon lingkaran (lihat biru, edit hijau, hapus merah)
 .btn-icon {
     width: 2rem;
