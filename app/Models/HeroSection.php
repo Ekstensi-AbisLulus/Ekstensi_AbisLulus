@@ -51,4 +51,19 @@ class HeroSection extends Model
 
         return Storage::disk('public')->url($this->image_url);
     }
+
+    /**
+     * Hapus file gambar dari storage publik jika berupa path lokal.
+     */
+    public function deleteStoredImage(): void
+    {
+        if (blank($this->image_url)
+            || str_starts_with($this->image_url, 'http://')
+            || str_starts_with($this->image_url, 'https://')
+            || str_starts_with($this->image_url, '/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete($this->image_url);
+    }
 }

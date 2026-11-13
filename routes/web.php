@@ -114,6 +114,7 @@ Route::middleware(['auth', 'role:super_admin'])
         Route::get('/dashboard', [SuperAdmin\DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('admins', SuperAdmin\AdminController::class);
+        Route::patch('/hero-sections/{hero_section}/toggle', [SuperAdmin\HeroSectionController::class, 'toggle'])->name('hero-sections.toggle');
         Route::resource('hero-sections', SuperAdmin\HeroSectionController::class);
         Route::resource('articles', SuperAdmin\ArticleController::class);
 

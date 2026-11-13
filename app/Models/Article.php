@@ -97,4 +97,19 @@ class Article extends Model
 
         return Storage::disk('public')->url($this->cover_image_url);
     }
+
+    /**
+     * Hapus file sampul dari storage publik jika berupa path lokal.
+     */
+    public function deleteStoredCover(): void
+    {
+        if (blank($this->cover_image_url)
+            || str_starts_with($this->cover_image_url, 'http://')
+            || str_starts_with($this->cover_image_url, 'https://')
+            || str_starts_with($this->cover_image_url, '/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete($this->cover_image_url);
+    }
 }
