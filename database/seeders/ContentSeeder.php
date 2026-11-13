@@ -185,20 +185,21 @@ class ContentSeeder extends Seeder
     private function seedArticlesAndHero(User $superAdmin): void
     {
         $articles = [
-            ['5 Skill yang Paling Dicari Perusahaan dari Lulusan Baru', 'Komunikasi, kerja sama tim, dan kemampuan digital menempati urutan teratas.'],
-            ['Mengapa Soft Skill Sama Pentingnya dengan Hard Skill', '80% responden survei kami menilai keduanya sama penting. Ini alasannya.'],
-            ['Panduan Memilih Jalur Setelah Lulus SMA/SMK', 'Kuliah, kerja, atau keduanya? Pertimbangkan hal-hal berikut sebelum memutuskan.'],
+            ['5 Skill yang Paling Dicari Perusahaan dari Lulusan Baru', 'Komunikasi, kerja sama tim, dan kemampuan digital menempati urutan teratas.', ArticleStatus::Published, 3],
+            ['Mengapa Soft Skill Sama Pentingnya dengan Hard Skill', '80% responden survei kami menilai keduanya sama penting. Ini alasannya.', ArticleStatus::Published, 2],
+            ['Panduan Memilih Jalur Setelah Lulus SMA/SMK', 'Kuliah, kerja, atau keduanya? Pertimbangkan hal-hal berikut sebelum memutuskan.', ArticleStatus::Published, 1],
+            ['Checklist Persiapan Hari Pertama Kerja untuk Fresh Graduate', 'Daftar persiapan dokumen, etika komunikasi, dan target minggu pertama di kantor.', ArticleStatus::Draft, null],
         ];
 
-        foreach ($articles as $i => [$title, $excerpt]) {
+        foreach ($articles as [$title, $excerpt, $status, $daysAgo]) {
             Article::create([
                 'super_admin_id' => $superAdmin->id,
                 'title' => $title,
                 'excerpt' => $excerpt,
                 'content' => $excerpt."\n\n".'Artikel contoh untuk keperluan pengembangan. Konten lengkap akan dikelola oleh Super Admin melalui panel Manajemen Artikel.',
-                'cover_image_url' => 'https://picsum.photos/seed/abislulus-artikel-'.($i + 1).'/800/450',
-                'status' => ArticleStatus::Published,
-                'published_at' => now()->subDays(3 - $i),
+                'cover_image_url' => '/images/placeholders/article-cover.svg',
+                'status' => $status,
+                'published_at' => $daysAgo !== null ? now()->subDays($daysAgo) : null,
             ]);
         }
 
@@ -206,8 +207,17 @@ class ContentSeeder extends Seeder
             'super_admin_id' => $superAdmin->id,
             'title' => 'Siap Melangkah Setelah Lulus',
             'subtitle' => 'Belajar gratis lewat E-Learning dan ikuti Career Mentoring bersama praktisi.',
-            'image_url' => 'https://picsum.photos/seed/abislulus-hero/1200/600',
+            'image_url' => '/images/placeholders/hero-1.svg',
             'target_url' => '/e-learning',
+            'is_active' => true,
+        ]);
+
+        HeroSection::create([
+            'super_admin_id' => $superAdmin->id,
+            'title' => 'Ikuti Career Mentoring Gratis Bersama Praktisi',
+            'subtitle' => 'Bangun kesiapan kerja lewat webinar dan diskusi interaktif setiap pekan.',
+            'image_url' => '/images/placeholders/hero-2.svg',
+            'target_url' => '/kegiatan',
             'is_active' => true,
         ]);
     }

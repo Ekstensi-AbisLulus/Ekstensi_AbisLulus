@@ -6,20 +6,37 @@ use App\Enums\ArticleStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuperAdmin\StoreArticleRequest;
 use App\Models\Article;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        // TODO: ganti daftar artikel saat mengerjakan PBI-23.
-        return view('placeholders.panel', [
-            'title' => 'Manajemen Artikel',
-            'pbi' => 'PBI-23',
-            'actionUrl' => route('super-admin.articles.create'),
-            'actionLabel' => 'Tambah Artikel',
+        Gate::authorize('viewAny', Article::class);
+
+        $search = trim((string) ($request->input('search') ?? $request->input('q')));
+        $selectedStatus = trim((string) $request->input('status'));
+
+        if (! in_array($selectedStatus, ArticleStatus::values(), true)) {
+            $selectedStatus = '';
+        }
+
+        $articles = Article::with('author')
+            ->when($search !== '', fn (Builder $query) => $query->where('title', 'like', '%'.$search.'%'))
+            ->when($selectedStatus !== '', fn (Builder $query) => $query->where('status', $selectedStatus))
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('super-admin.articles.index', [
+            'articles' => $articles,
+            'statuses' => ArticleStatus::options(),
+            'search' => $search,
+            'selectedStatus' => $selectedStatus,
         ]);
     }
 
@@ -58,8 +75,11 @@ class ArticleController extends Controller
 
     public function show(Article $article): View
     {
-        // TODO: ganti pratinjau detail artikel saat mengerjakan PBI-23.
-        return $this->panelPlaceholder('Manajemen Artikel · Detail', 'PBI-23');
+        Gate::authorize('view', $article);
+
+        $article->load('author');
+
+        return view('super-admin.articles.show', compact('article'));
     }
 
     public function edit(Article $article): View

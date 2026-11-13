@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 | Publik (PRD §8.4)
 |--------------------------------------------------------------------------
 */
-Route::view('/', 'landing')->name('home');
+Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/e-learning', [MaterialController::class, 'index'])->name('materials.index');
 Route::get('/e-learning/{material}', [MaterialController::class, 'show'])->name('materials.show');
 Route::get('/kegiatan', [EventController::class, 'index'])->name('events.index');
