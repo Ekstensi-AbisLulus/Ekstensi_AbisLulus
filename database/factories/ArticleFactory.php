@@ -24,6 +24,11 @@ class ArticleFactory extends Factory
         ];
     }
 
+    public function published(): static
+    {
+        return $this->state(fn () => ['status' => ArticleStatus::Published]);
+    }
+
     public function draft(): static
     {
         return $this->state(fn () => ['status' => ArticleStatus::Draft, 'published_at' => null]);

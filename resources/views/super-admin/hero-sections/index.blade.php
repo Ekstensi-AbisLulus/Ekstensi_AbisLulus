@@ -70,11 +70,19 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @if ($hero->is_active)
-                                        <span class="badge-status badge-status-active">Aktif</span>
-                                    @else
-                                        <span class="badge-status badge-status-inactive">Nonaktif</span>
-                                    @endif
+                                    <form method="POST" action="{{ route('super-admin.hero-sections.toggle', $hero) }}" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button
+                                            type="submit"
+                                            class="badge-status {{ $hero->is_active ? 'badge-status-active' : 'badge-status-inactive' }}"
+                                            aria-label="{{ $hero->is_active ? 'Nonaktifkan hero '.$hero->title : 'Aktifkan hero '.$hero->title }}"
+                                            title="Klik untuk mengubah status tampil"
+                                        >
+                                            <i class="bi {{ $hero->is_active ? 'bi-check-circle-fill' : 'bi-pause-circle' }}" aria-hidden="true"></i>
+                                            <span>{{ $hero->is_active ? 'Aktif' : 'Nonaktif' }}</span>
+                                        </button>
+                                    </form>
                                 </td>
                                 <td class="small panel-muted text-nowrap">
                                     {{ $hero->created_at?->format('d M Y') ?? '-' }}

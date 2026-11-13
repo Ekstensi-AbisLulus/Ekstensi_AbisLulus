@@ -644,6 +644,21 @@ textarea:disabled,
     }
 }
 
+button.badge-status {
+    min-height: 2.75rem;
+    padding: .35rem .9rem;
+    transition: filter .15s ease, box-shadow .15s ease;
+
+    &:hover {
+        filter: brightness(.95);
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+}
+
 .table-thumb {
     width: 96px;
     height: 54px;

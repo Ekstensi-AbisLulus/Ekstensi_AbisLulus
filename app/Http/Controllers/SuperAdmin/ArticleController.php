@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Enums\ArticleStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuperAdmin\StoreArticleRequest;
+use App\Http\Requests\SuperAdmin\UpdateArticleRequest;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -84,14 +85,49 @@ class ArticleController extends Controller
 
     public function edit(Article $article): View
     {
-        // TODO: ganti form ubah artikel saat mengerjakan PBI-24.
-        return $this->panelPlaceholder('Manajemen Artikel · Ubah', 'PBI-24');
+        Gate::authorize('update', $article);
+
+        return view('super-admin.articles.edit', [
+            'article' => $article,
+            'statuses' => ArticleStatus::options(),
+        ]);
     }
 
-    public function update(Article $article): RedirectResponse
+    public function update(UpdateArticleRequest $request, Article $article): RedirectResponse
     {
-        // TODO: ganti aksi simpan perubahan artikel saat mengerjakan PBI-24.
-        return $this->notAvailable('PBI-24');
+        Gate::authorize('update', $article);
+
+        $coverFile = $request->file('cover_image') ?? $request->file('cover');
+        $coverPath = $article->cover_image_url;
+
+        if ($coverFile !== null) {
+            $article->deleteStoredCover();
+            $coverPath = $coverFile->store('articles', 'public');
+        }
+
+        $status = ArticleStatus::from($request->validated('status'));
+        $slug = $request->boolean('update_slug')
+            ? Article::uniqueSlug($request->validated('title'), $article->id)
+            : $article->slug;
+
+        $publishedAt = $article->published_at;
+        if ($status === ArticleStatus::Published && $publishedAt === null) {
+            $publishedAt = now();
+        }
+
+        $article->update([
+            'title' => $request->validated('title'),
+            'slug' => $slug,
+            'excerpt' => $request->validated('excerpt'),
+            'content' => $request->validated('content'),
+            'cover_image_url' => $coverPath,
+            'status' => $status,
+            'published_at' => $publishedAt,
+        ]);
+
+        return redirect()
+            ->route('super-admin.articles.index')
+            ->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroy(Article $article): RedirectResponse

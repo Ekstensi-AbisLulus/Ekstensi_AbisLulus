@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuperAdmin\StoreHeroSectionRequest;
+use App\Http\Requests\SuperAdmin\UpdateHeroSectionRequest;
 use App\Models\HeroSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -61,14 +62,46 @@ class HeroSectionController extends Controller
 
     public function edit(HeroSection $heroSection): View
     {
-        // TODO: ganti form ubah hero section saat mengerjakan PBI-24.
-        return $this->panelPlaceholder('Hero Section · Ubah', 'PBI-24');
+        Gate::authorize('update', $heroSection);
+
+        return view('super-admin.hero-sections.edit', compact('heroSection'));
     }
 
-    public function update(HeroSection $heroSection): RedirectResponse
+    public function update(UpdateHeroSectionRequest $request, HeroSection $heroSection): RedirectResponse
     {
-        // TODO: ganti aksi simpan perubahan hero section saat mengerjakan PBI-24.
-        return $this->notAvailable('PBI-24');
+        Gate::authorize('update', $heroSection);
+
+        $imagePath = $heroSection->image_url;
+
+        if ($request->hasFile('image')) {
+            $heroSection->deleteStoredImage();
+            $imagePath = $request->file('image')->store('hero', 'public');
+        }
+
+        $heroSection->update([
+            'title' => $request->validated('title'),
+            'subtitle' => $request->validated('subtitle'),
+            'image_url' => $imagePath,
+            'target_url' => $request->validated('target_url'),
+            'is_active' => $request->has('is_active') ? $request->boolean('is_active') : $heroSection->is_active,
+        ]);
+
+        return redirect()
+            ->route('super-admin.hero-sections.index')
+            ->with('success', 'Data berhasil diperbarui.');
+    }
+
+    public function toggle(HeroSection $heroSection): RedirectResponse
+    {
+        Gate::authorize('update', $heroSection);
+
+        $heroSection->update([
+            'is_active' => ! $heroSection->is_active,
+        ]);
+
+        return redirect()
+            ->route('super-admin.hero-sections.index')
+            ->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroy(HeroSection $heroSection): RedirectResponse
