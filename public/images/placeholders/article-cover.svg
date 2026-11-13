@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-label="Sampul Artikel AbisLulus">
+  <defs>
+    <linearGradient id="artBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DBEAFE"/>
+      <stop offset="100%" stop-color="#EFF6FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#artBg)"/>
+  <circle cx="680" cy="90" r="130" fill="#2563EB" fill-opacity="0.10"/>
+  <circle cx="110" cy="380" r="150" fill="#0B2A6F" fill-opacity="0.08"/>
+  <rect x="230" y="115" width="340" height="220" rx="18" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="3"/>
+  <rect x="270" y="155" width="110" height="22" rx="6" fill="#DBEAFE"/>
+  <rect x="270" y="195" width="260" height="16" rx="8" fill="#1E40AF" fill-opacity="0.75"/>
+  <rect x="270" y="225" width="220" height="14" rx="7" fill="#64748B" fill-opacity="0.45"/>
+  <rect x="270" y="252" width="240" height="14" rx="7" fill="#64748B" fill-opacity="0.45"/>
+  <rect x="270" y="280" width="150" height="14" rx="7" fill="#64748B" fill-opacity="0.35"/>
+</svg>

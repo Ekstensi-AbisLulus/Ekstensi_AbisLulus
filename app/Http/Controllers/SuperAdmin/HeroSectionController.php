@@ -13,13 +13,14 @@ class HeroSectionController extends Controller
 {
     public function index(): View
     {
-        // TODO: ganti daftar hero section saat mengerjakan PBI-23.
-        return view('placeholders.panel', [
-            'title' => 'Hero Section',
-            'pbi' => 'PBI-23',
-            'actionUrl' => route('super-admin.hero-sections.create'),
-            'actionLabel' => 'Tambah Hero Section',
-        ]);
+        Gate::authorize('viewAny', HeroSection::class);
+
+        $heroSections = HeroSection::with('author')
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('super-admin.hero-sections.index', compact('heroSections'));
     }
 
     public function create(): View
@@ -51,8 +52,11 @@ class HeroSectionController extends Controller
 
     public function show(HeroSection $heroSection): View
     {
-        // TODO: ganti pratinjau detail hero section saat mengerjakan PBI-23.
-        return $this->panelPlaceholder('Hero Section · Detail', 'PBI-23');
+        Gate::authorize('view', $heroSection);
+
+        $heroSection->load('author');
+
+        return view('super-admin.hero-sections.show', compact('heroSection'));
     }
 
     public function edit(HeroSection $heroSection): View

@@ -43,8 +43,9 @@ class DatabaseSchemaTest extends TestCase
         $this->assertDatabaseCount('questions', 10);
         $this->assertDatabaseCount('answer_options', 40);
         $this->assertDatabaseCount('career_events', 4);
-        $this->assertDatabaseCount('articles', 3);
-        $this->assertSame(1, HeroSection::active()->count());
+        $this->assertDatabaseCount('articles', 4);
+        $this->assertSame(3, Article::published()->count());
+        $this->assertSame(2, HeroSection::active()->count());
         $this->assertGreaterThan(0, LearningReview::count());
         $this->assertGreaterThan(0, Testimonial::count());
 

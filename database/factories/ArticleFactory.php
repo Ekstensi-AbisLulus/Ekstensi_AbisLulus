@@ -19,7 +19,7 @@ class ArticleFactory extends Factory
             'title' => rtrim(fake()->sentence(6), '.'),
             'excerpt' => fake()->sentence(15),
             'content' => implode("\n\n", fake()->paragraphs(4)),
-            'cover_image_url' => 'https://picsum.photos/seed/'.fake()->unique()->word().'/800/450',
+            'cover_image_url' => '/images/placeholders/article-cover.svg',
             'status' => ArticleStatus::Published,
         ];
     }

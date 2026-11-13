@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" role="img" aria-label="Banner Hero AbisLulus 2">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="50%" stop-color="#0B2A6F"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#bg2)"/>
+  <circle cx="940" cy="460" r="240" fill="#38BDF8" fill-opacity="0.15"/>
+  <circle cx="240" cy="120" r="190" fill="#2563EB" fill-opacity="0.22"/>
+  <g fill="#FFFFFF" fill-opacity="0.12">
+    <rect x="740" y="170" width="340" height="240" rx="20"/>
+    <circle cx="820" cy="250" r="36"/>
+    <rect x="875" y="230" width="160" height="18" rx="9"/>
+    <rect x="875" y="260" width="120" height="14" rx="7"/>
+    <rect x="784" y="320" width="250" height="14" rx="7"/>
+    <rect x="784" y="350" width="190" height="14" rx="7"/>
+  </g>
+</svg>
