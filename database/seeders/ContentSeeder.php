@@ -6,7 +6,6 @@ use App\Enums\ArticleStatus;
 use App\Enums\EventCategory;
 use App\Enums\EventPlatform;
 use App\Enums\EventStatus;
-use App\Enums\RegistrationStatus;
 use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\CareerEvent;
@@ -14,8 +13,6 @@ use App\Models\HeroSection;
 use App\Models\LearningMaterial;
 use App\Models\LearningReview;
 use App\Models\Quiz;
-use App\Models\QuizAnswer;
-use App\Models\QuizAttempt;
 use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -35,13 +32,11 @@ class ContentSeeder extends Seeder
             $users = User::where('role', UserRole::User)->orderBy('id')->get();
 
             $materials = $this->seedMaterials($admins->all());
-            $quizzes = $this->seedQuizzes($materials, $admins->all());
-            $events = $this->seedEvents($admins->all());
+            $this->seedQuizzes($materials, $admins->all());
+            $this->seedEvents($admins->all());
 
             $this->seedArticlesAndHero($superAdmin);
             $this->seedReviews($materials, $users->all());
-            $this->seedAttempt($quizzes[0], $users[0]);
-            $this->seedRegistrations($events, $users->all());
             $this->seedTestimonials($users->all());
         });
     }
@@ -237,56 +232,6 @@ class ContentSeeder extends Seeder
                     'review_text' => $text,
                 ]);
             }
-        }
-    }
-
-    private function seedAttempt(Quiz $quiz, User $user): void
-    {
-        $attempt = QuizAttempt::create([
-            'user_id' => $user->id,
-            'quiz_id' => $quiz->id,
-            'started_at' => now()->subMinutes(10),
-        ]);
-
-        // Jawab 4 dari 5 soal: 3 benar, 1 salah, 1 tidak dijawab → skor 60.
-        foreach ($quiz->questions()->with('options')->get()->take(4) as $i => $question) {
-            $option = $i < 3
-                ? $question->options->firstWhere('is_correct', true)
-                : $question->options->firstWhere('is_correct', false);
-
-            QuizAnswer::create([
-                'attempt_id' => $attempt->id,
-                'question_id' => $question->id,
-                'selected_option_id' => $option->id,
-                'is_correct' => $option->is_correct,
-                'answered_at' => now()->subMinutes(5),
-            ]);
-        }
-
-        $attempt->calculateScore();
-    }
-
-    /**
-     * @param  list<CareerEvent>  $events
-     * @param  list<User>  $users
-     */
-    private function seedRegistrations(array $events, array $users): void
-    {
-        $pairs = [
-            [0, 0, RegistrationStatus::Registered],
-            [0, 1, RegistrationStatus::Registered],
-            [1, 0, RegistrationStatus::Registered],
-            [1, 2, RegistrationStatus::Cancelled],
-            [3, 0, RegistrationStatus::Attended],
-            [3, 3, RegistrationStatus::Attended],
-        ];
-
-        foreach ($pairs as [$e, $u, $status]) {
-            $events[$e]->registrations()->create([
-                'user_id' => $users[$u]->id,
-                'status' => $status,
-                'registered_at' => now()->subDays(2),
-            ]);
         }
     }
 

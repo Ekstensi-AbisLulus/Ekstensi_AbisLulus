@@ -32,7 +32,7 @@
                     <p class="text-secondary small mb-4">{{ $user->email }}</p>
                     <nav class="nav nav-pills flex-column text-start gap-1">
                         <a class="nav-link active" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i>Profil</a>
-                        <a class="nav-link text-body" href="{{ route('profile.history.learning') }}"><i class="bi bi-play-circle me-2"></i>Aktivitas E-Learning</a>
+                        <a class="nav-link text-body" href="{{ route('profile.history.elearning') }}"><i class="bi bi-play-circle me-2"></i>Aktivitas E-Learning</a>
                         <a class="nav-link text-body" href="{{ route('profile.history.events') }}"><i class="bi bi-calendar-event me-2"></i>Aktivitas Kegiatan</a>
                     </nav>
                 </div>
