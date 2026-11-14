@@ -65,6 +65,7 @@ Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')-
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profil/foto', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
     Route::get('/profil/riwayat/e-learning', [ProfileHistoryController::class, 'learning'])->name('profile.history.learning');
     Route::get('/profil/riwayat/kegiatan', [ProfileHistoryController::class, 'events'])->name('profile.history.events');
 

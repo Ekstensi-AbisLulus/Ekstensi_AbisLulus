@@ -19,6 +19,9 @@
                 <div class="card profile-card border-0 shadow-sm rounded-4 text-center p-4">
                     @if ($avatarUrl)
                         <img src="{{ $avatarUrl }}" class="profile-avatar mx-auto mb-3" alt="Foto profil {{ $user->name }}">
+                        <button type="button" class="btn btn-sm btn-outline-danger align-self-center mb-3" data-bs-toggle="modal" data-bs-target="#deleteAvatarModal">
+                            <i class="bi bi-trash me-1"></i>Hapus Foto
+                        </button>
                     @else
                         <span class="profile-avatar profile-avatar-default mx-auto mb-3" aria-label="Avatar {{ $user->name }}">
                             {{ filled($user->name) ? mb_strtoupper(mb_substr($user->name, 0, 1)) : '' }}
@@ -112,6 +115,21 @@
                                 <input id="avatar" name="avatar" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="form-control @error('avatar') is-invalid @enderror">
                                 @error('avatar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
+                            <div class="col-12"><hr class="my-2"><h2 class="h5 mb-0">Ubah Password <span class="text-secondary fw-normal">(opsional)</span></h2></div>
+                            <div class="col-md-6">
+                                <label for="current_password" class="form-label">Password lama</label>
+                                <input id="current_password" name="current_password" type="password" autocomplete="current-password" class="form-control @error('current_password') is-invalid @enderror">
+                                @error('current_password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">Password baru</label>
+                                <input id="password" name="password" type="password" autocomplete="new-password" class="form-control @error('password') is-invalid @enderror">
+                                @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="password_confirmation" class="form-label">Konfirmasi password baru</label>
+                                <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" class="form-control">
+                            </div>
                             <div class="col-12 pt-2">
                                 <button type="submit" class="btn btn-primary px-4">Simpan Perubahan</button>
                             </div>
@@ -121,4 +139,26 @@
             </section>
         </div>
     </div>
+
+    @if ($avatarUrl)
+        <div class="modal fade" id="deleteAvatarModal" tabindex="-1" aria-labelledby="deleteAvatarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title fs-5" id="deleteAvatarModalLabel">Hapus foto profil?</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal"></button>
+                    </div>
+                    <div class="modal-body">Foto profil akan dihapus dan avatar kembali ke tampilan default.</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        <form method="POST" action="{{ route('profile.avatar.destroy') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Ya, Hapus Foto</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
