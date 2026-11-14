@@ -75,6 +75,27 @@ $navbar-light-active-color: $primary;
     }
 }
 
+.profile-card {
+    background: #fff;
+}
+
+.profile-avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-avatar-default {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bs-primary-bg-subtle);
+    color: var(--bs-primary);
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
 // Aksi tabel: ikon lingkaran (lihat biru, edit hijau, hapus merah)
 .btn-icon {
     width: 2rem;
