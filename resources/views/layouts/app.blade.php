@@ -45,10 +45,15 @@
                 @endguest
 
                 @auth
+                    @php($navbarAvatar = auth()->user()->profile?->avatar_path)
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="avatar">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
+                            @if ($navbarAvatar)
+                                <img src="{{ asset('storage/'.$navbarAvatar) }}" alt="Foto profil {{ auth()->user()->name }}" class="avatar">
+                            @else
+                                <span class="avatar">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
+                            @endif
                             <span class="fw-medium">{{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">

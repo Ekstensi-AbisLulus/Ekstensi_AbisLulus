@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UpdateProfileRequest extends FormRequest
@@ -26,6 +27,8 @@ class UpdateProfileRequest extends FormRequest
             'bio' => ['nullable', 'string', 'max:1000'],
             'linkedin_url' => ['nullable', 'url', 'max:2048'],
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'current_password' => ['required_with:password'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ];
     }
 
@@ -36,5 +39,17 @@ class UpdateProfileRequest extends FormRequest
             'education_level.in' => 'Pilih status pendidikan yang tersedia.',
             'graduation_year.between' => 'Tahun lulus harus antara 1990 dan '.(now()->year + 5).'.',
         ];
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator): void {
+            if (filled($this->input('password')) && ! Hash::check(
+                (string) $this->input('current_password'),
+                (string) $this->user()->getAuthPassword(),
+            )) {
+                $validator->errors()->add('current_password', 'Password lama tidak sesuai.');
+            }
+        });
     }
 }
