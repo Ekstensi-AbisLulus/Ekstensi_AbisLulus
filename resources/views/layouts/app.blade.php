@@ -59,7 +59,7 @@
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
                             @if (auth()->user()->isUser())
                                 <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i>Profil Saya</a></li>
-                                <li><a class="dropdown-item" href="{{ route('profile.history.learning') }}"><i class="bi bi-clock-history me-2"></i>Riwayat</a></li>
+                                <li><a class="dropdown-item" href="{{ route('profile.history.elearning') }}"><i class="bi bi-clock-history me-2"></i>Riwayat</a></li>
                             @else
                                 <li><a class="dropdown-item" href="{{ route(auth()->user()->homeRoute()) }}"><i class="bi bi-speedometer2 me-2"></i>Panel Admin</a></li>
                             @endif
