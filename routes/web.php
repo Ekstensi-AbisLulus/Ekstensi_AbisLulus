@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin;
-use App\Http\Controllers\Admin\PembelajaranController as AdminPembelajaranController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -17,7 +16,6 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\TestimonialController;
-use App\Http\Controllers\User\PembelajaranController as UserPembelajaranController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,17 +31,6 @@ Route::get('/kegiatan/{event}', [EventController::class, 'show'])->name('events.
 Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/artikel/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 Route::get('/tentang', [PageController::class, 'about'])->name('about');
-
-// Route untuk Pembelajaran (Admin - Aqeel_Sprint1)
-Route::get('/pembelajaran', [AdminPembelajaranController::class, 'index'])->name('pembelajaran.index');
-Route::get('/pembelajaran/create', [AdminPembelajaranController::class, 'create'])->name('pembelajaran.create');
-Route::post('/pembelajaran', [AdminPembelajaranController::class, 'store'])->name('pembelajaran.store');
-Route::get('/pembelajaran/{id}/edit', [AdminPembelajaranController::class, 'edit'])->name('pembelajaran.edit');
-Route::put('/pembelajaran/{id}', [AdminPembelajaranController::class, 'update'])->name('pembelajaran.update');
-
-// Route untuk Pembelajaran (User - Aqeel_Sprint1)
-Route::get('/user/pembelajaran', [UserPembelajaranController::class, 'index'])->name('user.pembelajaran.index');
-Route::get('/user/pembelajaran/{id}', [UserPembelajaranController::class, 'details'])->name('user.pembelajaran.details');
 
 /*
 |--------------------------------------------------------------------------

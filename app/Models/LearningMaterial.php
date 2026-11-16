@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class LearningMaterial extends Model
 {
@@ -80,5 +81,23 @@ class LearningMaterial extends Model
 
             return $this->relationLoaded('reviews') ? $this->reviews->count() : $this->reviews()->count();
         });
+    }
+
+    /**
+     * URL tampilan thumbnail untuk path storage lokal maupun URL eksternal.
+     */
+    public function thumbnailSrc(): ?string
+    {
+        if (blank($this->thumbnail_url)) {
+            return null;
+        }
+
+        if (str_starts_with($this->thumbnail_url, 'http://')
+            || str_starts_with($this->thumbnail_url, 'https://')
+            || str_starts_with($this->thumbnail_url, '/')) {
+            return $this->thumbnail_url;
+        }
+
+        return Storage::disk('public')->url($this->thumbnail_url);
     }
 }
