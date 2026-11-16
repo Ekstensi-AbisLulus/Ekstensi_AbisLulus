@@ -20,6 +20,11 @@
         </div>
 
         <div class="d-flex flex-wrap gap-2 align-self-start align-self-md-center">
+            @can('update', $material)
+                <a href="{{ route('admin.materials.edit', $material) }}" class="btn btn-primary">
+                    <i class="bi bi-pencil me-1" aria-hidden="true"></i>Ubah Materi
+                </a>
+            @endcan
             @if ($material->is_published)
                 <a href="{{ route('materials.show', $material) }}" target="_blank" rel="noopener" class="btn btn-outline-primary">
                     <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>Lihat di Halaman Publik

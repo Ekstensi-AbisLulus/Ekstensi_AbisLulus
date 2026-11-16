@@ -102,6 +102,26 @@ class LearningMaterial extends Model
     }
 
     /**
+     * Hapus file thumbnail dari storage lokal bila bukan URL eksternal.
+     */
+    public function deleteStoredThumbnail(): void
+    {
+        if (blank($this->thumbnail_url)) {
+            return;
+        }
+
+        if (str_starts_with($this->thumbnail_url, 'http://')
+            || str_starts_with($this->thumbnail_url, 'https://')
+            || str_starts_with($this->thumbnail_url, '/')) {
+            return;
+        }
+
+        if (Storage::disk('public')->exists($this->thumbnail_url)) {
+            Storage::disk('public')->delete($this->thumbnail_url);
+        }
+    }
+
+    /**
      * Konversi video_url (YouTube / Google Drive) menjadi URL embed (PRD §6.1).
      */
     public function videoEmbedUrl(): ?string

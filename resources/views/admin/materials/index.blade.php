@@ -127,14 +127,16 @@
                                         >
                                             <i class="bi bi-eye" aria-hidden="true"></i>
                                         </a>
-                                        <a
-                                            href="{{ route('admin.materials.edit', $material) }}"
-                                            class="btn-icon btn-icon-edit"
-                                            title="Ubah Materi"
-                                            aria-label="Ubah {{ $material->title }}"
-                                        >
-                                            <i class="bi bi-pencil" aria-hidden="true"></i>
-                                        </a>
+                                        @can('update', $material)
+                                            <a
+                                                href="{{ route('admin.materials.edit', $material) }}"
+                                                class="btn-icon btn-icon-edit"
+                                                title="Ubah Materi"
+                                                aria-label="Ubah {{ $material->title }}"
+                                            >
+                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                                            </a>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

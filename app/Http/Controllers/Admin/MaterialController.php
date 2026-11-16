@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMaterialRequest;
+use App\Http\Requests\Admin\UpdateMaterialRequest;
 use App\Models\LearningMaterial;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -72,14 +73,45 @@ class MaterialController extends Controller
 
     public function edit(LearningMaterial $material): View
     {
-        // TODO: placeholder — ganti saat mengerjakan PBI-12
-        return $this->panelPlaceholder('Manajemen E-Learning · Ubah', 'PBI-12');
+        Gate::authorize('update', $material);
+
+        return view('admin.materials.edit', compact('material'));
     }
 
-    public function update(LearningMaterial $material): RedirectResponse
+    public function update(UpdateMaterialRequest $request, LearningMaterial $material): RedirectResponse
     {
-        // TODO: placeholder — ganti saat mengerjakan PBI-12
-        return $this->notAvailable('PBI-12');
+        Gate::authorize('update', $material);
+
+        $thumbnailUrl = $material->thumbnail_url;
+        $wasExternalUrl = is_string($thumbnailUrl)
+            && (str_starts_with($thumbnailUrl, 'http://') || str_starts_with($thumbnailUrl, 'https://'));
+
+        if ($request->hasFile('thumbnail')) {
+            $material->deleteStoredThumbnail();
+            $thumbnailUrl = $request->file('thumbnail')->store('materials', 'public');
+        } elseif ($request->filled('thumbnail_url')) {
+            $newThumbnailUrl = $request->validated('thumbnail_url');
+            if ($newThumbnailUrl !== $material->thumbnail_url) {
+                $material->deleteStoredThumbnail();
+            }
+            $thumbnailUrl = $newThumbnailUrl;
+        } elseif ($wasExternalUrl && $request->exists('thumbnail_url')) {
+            $thumbnailUrl = null;
+        }
+
+        $material->update([
+            'title' => $request->validated('title'),
+            'description' => $request->validated('description'),
+            'video_url' => $request->validated('video_url'),
+            'thumbnail_url' => $thumbnailUrl,
+            'is_published' => $request->has('is_published')
+                ? $request->boolean('is_published')
+                : $material->is_published,
+        ]);
+
+        return redirect()
+            ->route('admin.materials.index')
+            ->with('success', 'Materi pembelajaran berhasil diperbarui.');
     }
 
     public function destroy(LearningMaterial $material): RedirectResponse
