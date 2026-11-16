@@ -132,7 +132,13 @@ class ArticleController extends Controller
 
     public function destroy(Article $article): RedirectResponse
     {
-        // TODO: ganti aksi hapus artikel saat mengerjakan PBI-25.
-        return $this->notAvailable('PBI-25');
+        Gate::authorize('delete', $article);
+
+        $article->deleteStoredCover();
+        $article->delete();
+
+        return redirect()
+            ->route('super-admin.articles.index')
+            ->with('success', 'Data berhasil dihapus.');
     }
 }

@@ -29,6 +29,15 @@
                 <i class="bi bi-pencil" aria-hidden="true"></i>
                 <span>Ubah Artikel</span>
             </a>
+            <button
+                type="button"
+                class="btn btn-outline-danger btn-panel"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteArticleModal-{{ $article->id }}"
+            >
+                <i class="bi bi-trash" aria-hidden="true"></i>
+                <span>Hapus Artikel</span>
+            </button>
             <a href="{{ route('super-admin.articles.index') }}" class="btn btn-outline-secondary btn-panel">
                 <i class="bi bi-arrow-left" aria-hidden="true"></i>
                 <span>Kembali ke Daftar</span>
@@ -67,6 +76,43 @@
 
             <div class="article-body">
                 {!! nl2br(e($article->content)) !!}
+            </div>
+        </div>
+    </div>
+
+    <div
+        class="modal fade"
+        id="deleteArticleModal-{{ $article->id }}"
+        tabindex="-1"
+        aria-labelledby="deleteArticleModalLabel-{{ $article->id }}"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h3 class="modal-title h6 fw-bold mb-0" id="deleteArticleModalLabel-{{ $article->id }}">
+                        Konfirmasi Hapus Artikel
+                    </h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">
+                        Hapus artikel '{{ $article->title }}'? Tindakan ini tidak dapat dibatalkan.
+                    </p>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <form method="POST" action="{{ route('super-admin.articles.destroy', $article) }}" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-panel">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
+                            <span>Hapus</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -23,6 +23,15 @@
                 <i class="bi bi-pencil" aria-hidden="true"></i>
                 <span>Ubah Hero</span>
             </a>
+            <button
+                type="button"
+                class="btn btn-outline-danger btn-panel"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteHeroModal-{{ $heroSection->id }}"
+            >
+                <i class="bi bi-trash" aria-hidden="true"></i>
+                <span>Hapus Hero</span>
+            </button>
             <a href="{{ route('super-admin.hero-sections.index') }}" class="btn btn-outline-secondary btn-panel">
                 <i class="bi bi-arrow-left" aria-hidden="true"></i>
                 <span>Kembali ke Daftar</span>
@@ -83,5 +92,42 @@
             <dt class="col-sm-3 panel-muted mb-0">Status Tampil</dt>
             <dd class="col-sm-9 mb-0">{{ $heroSection->is_active ? 'Aktif (ditampilkan di beranda)' : 'Nonaktif (disembunyikan dari beranda)' }}</dd>
         </dl>
+    </div>
+
+    <div
+        class="modal fade"
+        id="deleteHeroModal-{{ $heroSection->id }}"
+        tabindex="-1"
+        aria-labelledby="deleteHeroModalLabel-{{ $heroSection->id }}"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h3 class="modal-title h6 fw-bold mb-0" id="deleteHeroModalLabel-{{ $heroSection->id }}">
+                        Konfirmasi Hapus Hero Section
+                    </h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">
+                        Hapus hero '{{ $heroSection->title }}'? Tindakan ini tidak dapat dibatalkan.
+                    </p>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <form method="POST" action="{{ route('super-admin.hero-sections.destroy', $heroSection) }}" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-panel">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
+                            <span>Hapus</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

@@ -13,7 +13,7 @@
         </div>
         <a href="{{ route('super-admin.hero-sections.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center">
             <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            <span>+ Tambah Hero</span>
+            <span>Tambah</span>
         </a>
     </div>
 
@@ -105,18 +105,16 @@
                                         >
                                             <i class="bi bi-pencil" aria-hidden="true"></i>
                                         </a>
-                                        <form method="POST" action="{{ route('super-admin.hero-sections.destroy', $hero) }}" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button
-                                                type="submit"
-                                                class="btn-icon btn-icon-delete"
-                                                aria-label="Hapus {{ $hero->title }}"
-                                                title="Hapus"
-                                            >
-                                                <i class="bi bi-trash" aria-hidden="true"></i>
-                                            </button>
-                                        </form>
+                                        <button
+                                            type="button"
+                                            class="btn-icon btn-icon-delete"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteHeroModal-{{ $hero->id }}"
+                                            aria-label="Hapus {{ $hero->title }}"
+                                            title="Hapus"
+                                        >
+                                            <i class="bi bi-trash" aria-hidden="true"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -132,4 +130,43 @@
             @endif
         @endif
     </div>
+
+    @foreach ($heroSections as $hero)
+        <div
+            class="modal fade"
+            id="deleteHeroModal-{{ $hero->id }}"
+            tabindex="-1"
+            aria-labelledby="deleteHeroModalLabel-{{ $hero->id }}"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-bottom">
+                        <h3 class="modal-title h6 fw-bold mb-0" id="deleteHeroModalLabel-{{ $hero->id }}">
+                            Konfirmasi Hapus Hero Section
+                        </h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">
+                            Hapus hero '{{ $hero->title }}'? Tindakan ini tidak dapat dibatalkan.
+                        </p>
+                    </div>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal">
+                            Batal
+                        </button>
+                        <form method="POST" action="{{ route('super-admin.hero-sections.destroy', $hero) }}" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-panel">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                <span>Hapus</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection

@@ -106,7 +106,13 @@ class HeroSectionController extends Controller
 
     public function destroy(HeroSection $heroSection): RedirectResponse
     {
-        // TODO: ganti aksi hapus hero section saat mengerjakan PBI-25.
-        return $this->notAvailable('PBI-25');
+        Gate::authorize('delete', $heroSection);
+
+        $heroSection->deleteStoredImage();
+        $heroSection->delete();
+
+        return redirect()
+            ->route('super-admin.hero-sections.index')
+            ->with('success', 'Data berhasil dihapus.');
     }
 }

@@ -13,7 +13,7 @@
         </div>
         <a href="{{ route('super-admin.articles.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center">
             <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            <span>+ Tambah Artikel</span>
+            <span>Tambah</span>
         </a>
     </div>
 
@@ -139,18 +139,16 @@
                                         >
                                             <i class="bi bi-pencil" aria-hidden="true"></i>
                                         </a>
-                                        <form method="POST" action="{{ route('super-admin.articles.destroy', $article) }}" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button
-                                                type="submit"
-                                                class="btn-icon btn-icon-delete"
-                                                aria-label="Hapus {{ $article->title }}"
-                                                title="Hapus"
-                                            >
-                                                <i class="bi bi-trash" aria-hidden="true"></i>
-                                            </button>
-                                        </form>
+                                        <button
+                                            type="button"
+                                            class="btn-icon btn-icon-delete"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteArticleModal-{{ $article->id }}"
+                                            aria-label="Hapus {{ $article->title }}"
+                                            title="Hapus"
+                                        >
+                                            <i class="bi bi-trash" aria-hidden="true"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -166,4 +164,43 @@
             @endif
         @endif
     </div>
+
+    @foreach ($articles as $article)
+        <div
+            class="modal fade"
+            id="deleteArticleModal-{{ $article->id }}"
+            tabindex="-1"
+            aria-labelledby="deleteArticleModalLabel-{{ $article->id }}"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-bottom">
+                        <h3 class="modal-title h6 fw-bold mb-0" id="deleteArticleModalLabel-{{ $article->id }}">
+                            Konfirmasi Hapus Artikel
+                        </h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">
+                            Hapus artikel '{{ $article->title }}'? Tindakan ini tidak dapat dibatalkan.
+                        </p>
+                    </div>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal">
+                            Batal
+                        </button>
+                        <form method="POST" action="{{ route('super-admin.articles.destroy', $article) }}" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-panel">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                <span>Hapus</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection
