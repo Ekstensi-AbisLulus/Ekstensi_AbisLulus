@@ -137,6 +137,18 @@
                                                 <i class="bi bi-pencil" aria-hidden="true"></i>
                                             </a>
                                         @endcan
+                                        @can('delete', $material)
+                                            <button
+                                                type="button"
+                                                class="btn-icon btn-icon-delete"
+                                                title="Hapus Materi"
+                                                aria-label="Hapus {{ $material->title }}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteMaterialModal-{{ $material->id }}"
+                                            >
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                            </button>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -144,6 +156,50 @@
                     </tbody>
                 </table>
             </div>
+
+            @foreach ($materials as $material)
+                @can('delete', $material)
+                    <div
+                        class="modal fade"
+                        id="deleteMaterialModal-{{ $material->id }}"
+                        tabindex="-1"
+                        aria-labelledby="deleteMaterialModalLabel-{{ $material->id }}"
+                        aria-hidden="true"
+                    >
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title h6 fw-bold mb-0" id="deleteMaterialModalLabel-{{ $material->id }}">
+                                        <i class="bi bi-exclamation-triangle-fill text-danger me-2" aria-hidden="true"></i>Konfirmasi Hapus Materi
+                                    </h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="mb-2">
+                                        Apakah Anda yakin ingin menghapus materi pembelajaran <strong>"{{ $material->title }}"</strong>?
+                                    </p>
+                                    <div class="alert alert-danger py-2 px-3 small mb-0">
+                                        <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                                        <strong>Perhatian:</strong> Tindakan ini tidak dapat dibatalkan. Data materi, file thumbnail, serta seluruh ulasan terkait akan dihapus secara permanen dari database.
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Batal
+                                    </button>
+                                    <form method="POST" action="{{ route('admin.materials.destroy', $material) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="bi bi-trash me-1" aria-hidden="true"></i>Ya, Hapus Materi
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endcan
+            @endforeach
 
             @if ($materials->hasPages())
                 <div class="px-4 py-3 border-top">

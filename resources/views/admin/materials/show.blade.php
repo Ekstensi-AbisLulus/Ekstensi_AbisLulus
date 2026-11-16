@@ -25,6 +25,16 @@
                     <i class="bi bi-pencil me-1" aria-hidden="true"></i>Ubah Materi
                 </a>
             @endcan
+            @can('delete', $material)
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteMaterialModal"
+                >
+                    <i class="bi bi-trash me-1" aria-hidden="true"></i>Hapus Materi
+                </button>
+            @endcan
             @if ($material->is_published)
                 <a href="{{ route('materials.show', $material) }}" target="_blank" rel="noopener" class="btn btn-outline-primary">
                     <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>Lihat di Halaman Publik
@@ -108,4 +118,46 @@
             </div>
         </div>
     </div>
+
+    @can('delete', $material)
+        <div
+            class="modal fade"
+            id="deleteMaterialModal"
+            tabindex="-1"
+            aria-labelledby="deleteMaterialModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title h6 fw-bold mb-0" id="deleteMaterialModalLabel">
+                            <i class="bi bi-exclamation-triangle-fill text-danger me-2" aria-hidden="true"></i>Konfirmasi Hapus Materi
+                        </h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-2">
+                            Apakah Anda yakin ingin menghapus materi pembelajaran <strong>"{{ $material->title }}"</strong>?
+                        </p>
+                        <div class="alert alert-danger py-2 px-3 small mb-0">
+                            <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                            <strong>Perhatian:</strong> Tindakan ini tidak dapat dibatalkan. Data materi, file thumbnail, serta seluruh ulasan terkait akan dihapus secara permanen dari database.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Batal
+                        </button>
+                        <form method="POST" action="{{ route('admin.materials.destroy', $material) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1" aria-hidden="true"></i>Ya, Hapus Materi
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endcan
 @endsection

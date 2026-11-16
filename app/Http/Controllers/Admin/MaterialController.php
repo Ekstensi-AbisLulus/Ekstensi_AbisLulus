@@ -116,7 +116,13 @@ class MaterialController extends Controller
 
     public function destroy(LearningMaterial $material): RedirectResponse
     {
-        // TODO: placeholder — ganti saat mengerjakan PBI-13
-        return $this->notAvailable('PBI-13');
+        Gate::authorize('delete', $material);
+
+        $material->deleteStoredThumbnail();
+        $material->delete();
+
+        return redirect()
+            ->route('admin.materials.index')
+            ->with('success', 'Materi pembelajaran berhasil dihapus.');
     }
 }
