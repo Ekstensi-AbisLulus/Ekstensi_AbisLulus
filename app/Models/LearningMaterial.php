@@ -100,4 +100,28 @@ class LearningMaterial extends Model
 
         return Storage::disk('public')->url($this->thumbnail_url);
     }
+
+    /**
+     * Konversi video_url (YouTube / Google Drive) menjadi URL embed (PRD §6.1).
+     */
+    public function videoEmbedUrl(): ?string
+    {
+        if (blank($this->video_url)) {
+            return null;
+        }
+
+        $url = trim($this->video_url);
+
+        // YouTube: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/shorts/ID, youtube.com/embed/ID
+        if (preg_match('~(?:youtube(?:-nocookie)?\.com/(?:watch\?.*v=|embed/|shorts/)|youtu\.be/)([A-Za-z0-9_-]{11})~i', $url, $matches)) {
+            return 'https://www.youtube.com/embed/'.$matches[1];
+        }
+
+        // Google Drive: drive.google.com/file/d/ID/view -> /preview
+        if (preg_match('~drive\.google\.com/file/d/([A-Za-z0-9_-]+)~i', $url, $matches)) {
+            return 'https://drive.google.com/file/d/'.$matches[1].'/preview';
+        }
+
+        return $url;
+    }
 }

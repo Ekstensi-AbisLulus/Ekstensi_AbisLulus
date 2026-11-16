@@ -5,21 +5,27 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMaterialRequest;
 use App\Models\LearningMaterial;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class MaterialController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        // TODO: placeholder — ganti daftar materi saat mengerjakan PBI-11
-        return view('placeholders.panel', [
-            'title' => 'Manajemen E-Learning',
-            'pbi' => 'PBI-11–13',
-            'actionUrl' => route('admin.materials.create'),
-            'actionLabel' => 'Tambah Materi Baru',
-        ]);
+        Gate::authorize('viewAny', LearningMaterial::class);
+
+        $search = trim((string) ($request->input('search') ?? $request->input('q')));
+
+        $materials = LearningMaterial::with('admin')
+            ->when($search !== '', fn (Builder $query) => $query->where('title', 'like', '%'.$search.'%'))
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.materials.index', compact('materials', 'search'));
     }
 
     public function create(): View
@@ -55,8 +61,13 @@ class MaterialController extends Controller
 
     public function show(LearningMaterial $material): View
     {
-        // TODO: placeholder — ganti saat mengerjakan PBI-11
-        return $this->panelPlaceholder('Manajemen E-Learning · Detail', 'PBI-11');
+        Gate::authorize('view', $material);
+
+        $material->load(['admin', 'quizzes'])
+            ->loadAvg('reviews', 'rating')
+            ->loadCount('reviews');
+
+        return view('admin.materials.show', compact('material'));
     }
 
     public function edit(LearningMaterial $material): View
