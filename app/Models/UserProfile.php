@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\EducationLevel;
 use App\Enums\Gender;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,5 +44,24 @@ class UserProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * URL publik foto profil (disk `public` via symlink public/storage), null bila belum ada foto.
+     * Pakai asset() agar mengikuti host & port yang sedang dibuka, bukan APP_URL di .env.
+     */
+    protected function avatarUrl(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->avatar_path
+            ? asset('storage/'.$this->avatar_path)
+            : null);
+    }
+
+    /**
+     * Profil dianggap lengkap bila No. HP sudah diisi (PBI-07).
+     */
+    public function isComplete(): bool
+    {
+        return filled($this->phone);
     }
 }
