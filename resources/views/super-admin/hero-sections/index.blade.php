@@ -12,8 +12,7 @@
             </p>
         </div>
         <a href="{{ route('super-admin.hero-sections.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            <span>Tambah</span>
+            <span>+ Tambah Hero</span>
         </a>
     </div>
 
@@ -26,7 +25,6 @@
                     Tambahkan banner hero pertama agar halaman beranda menampilkan visual utama program AbisLulus.
                 </p>
                 <a href="{{ route('super-admin.hero-sections.create') }}" class="btn btn-primary btn-panel">
-                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
                     <span>+ Tambah Hero</span>
                 </a>
             </div>

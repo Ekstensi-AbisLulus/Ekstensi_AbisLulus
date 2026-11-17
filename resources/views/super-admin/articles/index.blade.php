@@ -12,8 +12,7 @@
             </p>
         </div>
         <a href="{{ route('super-admin.articles.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            <span>Tambah</span>
+            <span>+ Tambah Artikel</span>
         </a>
     </div>
 
@@ -73,7 +72,6 @@
                         Mulai tulis artikel pertama untuk dibaca oleh lulusan baru di halaman publik.
                     </p>
                     <a href="{{ route('super-admin.articles.create') }}" class="btn btn-primary btn-panel">
-                        <i class="bi bi-plus-lg" aria-hidden="true"></i>
                         <span>+ Tambah Artikel</span>
                     </a>
                 @endif
