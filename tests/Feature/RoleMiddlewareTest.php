@@ -90,9 +90,9 @@ class RoleMiddlewareTest extends TestCase
     public function test_placeholder_action_redirects_back_with_message(): void
     {
         $this->actingAs(User::factory()->admin()->create())
-            ->from('/admin/materials')
-            ->post('/admin/materials')
-            ->assertRedirect('/admin/materials')
+            ->from('/admin/quizzes')
+            ->post('/admin/quizzes')
+            ->assertRedirect('/admin/quizzes')
             ->assertSessionHas('error');
     }
 
