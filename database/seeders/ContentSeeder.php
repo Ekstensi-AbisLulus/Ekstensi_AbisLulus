@@ -43,7 +43,103 @@ class ContentSeeder extends Seeder
             $this->seedAttempt($quizzes[0], $users[0]);
             $this->seedRegistrations($events, $users->all());
             $this->seedTestimonials($users->all());
+
+            $this->seedAdminHistoryDemo($admins->first(), $materials);
         });
+    }
+
+    /**
+     * PBI-09 — data tambahan milik admin pertama agar halaman Riwayat Aktivitas bisa didemokan:
+     * >10 materi (pagination), materi draf, kuis tanpa materi, event draf & dibatalkan,
+     * dengan tanggal dibuat/diubah yang bervariasi.
+     *
+     * @param  list<LearningMaterial>  $materials
+     */
+    private function seedAdminHistoryDemo(User $admin, array $materials): void
+    {
+        $extraMaterials = [
+            ['Dasar Desain Grafis dengan Canva', true],
+            ['Menulis Surat Lamaran Kerja', true],
+            ['Etika Profesional di Kantor', true],
+            ['Pengenalan Google Workspace', true],
+            ['Teknik Negosiasi Gaji Pertama', true],
+            ['Membangun Portofolio Digital', false],
+            ['Persiapan Psikotes Kerja', false],
+            ['Dasar Public Speaking', true],
+        ];
+
+        foreach ($extraMaterials as $i => [$title, $published]) {
+            $created = now()->subDays(30 - $i * 3)->setTime(9, 0);
+
+            LearningMaterial::forceCreate([
+                'admin_id' => $admin->id,
+                'title' => $title,
+                'description' => 'Materi contoh untuk demo riwayat aktivitas admin: '.strtolower($title).'.',
+                'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                'thumbnail_url' => $i === 6 ? null : 'https://picsum.photos/seed/abislulus-demo-'.($i + 1).'/640/360',
+                'is_published' => $published,
+                'created_at' => $created,
+                'updated_at' => $created->copy()->addDays($i % 3),
+            ]);
+        }
+
+        $extraQuizzes = [
+            ['Kuis: Etika Profesional', $materials[0]->id, 12],
+            ['Kuis Umum: Kesiapan Kerja', null, 5],
+        ];
+
+        foreach ($extraQuizzes as [$title, $materialId, $daysAgo]) {
+            $quiz = Quiz::forceCreate([
+                'material_id' => $materialId,
+                'created_by' => $admin->id,
+                'title' => $title,
+                'description' => 'Kuis contoh untuk demo riwayat aktivitas admin.',
+                'created_at' => now()->subDays($daysAgo),
+                'updated_at' => now()->subDays($daysAgo),
+            ]);
+
+            $questions = [
+                ['Sikap yang tepat saat terlambat masuk kerja adalah...', ['Diam saja', 'Memberi kabar ke atasan', 'Pulang lagi', 'Menyalahkan macet'], 1],
+                ['Dokumen yang umumnya dilampirkan saat melamar kerja...', ['CV', 'Rapor SD', 'Akta tanah', 'Struk belanja'], 0],
+            ];
+
+            foreach ($questions as $q => [$text, $options, $correctIndex]) {
+                $question = $quiz->questions()->create(['question_text' => $text, 'sort_order' => $q + 1]);
+
+                foreach ($options as $o => $optionText) {
+                    $question->options()->create([
+                        'option_text' => $optionText,
+                        'is_correct' => $o === $correctIndex,
+                        'sort_order' => $o + 1,
+                    ]);
+                }
+            }
+        }
+
+        $extraEvents = [
+            ['Webinar: Mengenal Dunia Startup', EventStatus::Draft, EventCategory::Hardskill, 21, 8],
+            ['Mentoring: Mengelola Stres Saat Mencari Kerja', EventStatus::Cancelled, null, 3, 15],
+        ];
+
+        foreach ($extraEvents as $i => [$title, $status, $category, $startInDays, $daysAgo]) {
+            $start = now()->addDays($startInDays)->setTime(19, 0);
+
+            CareerEvent::forceCreate([
+                'admin_id' => $admin->id,
+                'title' => $title,
+                'description' => 'Kegiatan contoh untuk demo riwayat aktivitas admin.',
+                'start_at' => $start,
+                'end_at' => $start->copy()->addHours(2),
+                'meeting_url' => 'https://meet.google.com/demo-abis-lulus'.$i,
+                'platform' => EventPlatform::GoogleMeet,
+                'capacity' => 40,
+                'status' => $status,
+                'category' => $category,
+                'thumbnail_url' => null,
+                'created_at' => now()->subDays($daysAgo),
+                'updated_at' => now()->subDays($daysAgo),
+            ]);
+        }
     }
 
     /**

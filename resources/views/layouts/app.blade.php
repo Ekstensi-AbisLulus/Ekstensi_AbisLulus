@@ -48,7 +48,7 @@
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center gap-2 text-decoration-none text-body dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="avatar">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
+                            @include('partials.avatar', ['user' => auth()->user()])
                             <span class="fw-medium">{{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
@@ -56,6 +56,7 @@
                                 <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i>Profil</a></li>
                                 <li><a class="dropdown-item" href="{{ route('profile.history.learning') }}"><i class="bi bi-clock-history me-2"></i>Riwayat</a></li>
                             @else
+                                <li><a class="dropdown-item" href="{{ route('admin.profile.edit') }}"><i class="bi bi-person me-2"></i>Profil</a></li>
                                 <li><a class="dropdown-item" href="{{ route(auth()->user()->homeRoute()) }}"><i class="bi bi-speedometer2 me-2"></i>Panel Admin</a></li>
                             @endif
                             <li><hr class="dropdown-divider"></li>

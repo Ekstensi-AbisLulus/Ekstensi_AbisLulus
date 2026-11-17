@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\RegistrationStatus;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
+use App\Models\AnswerOption;
 use App\Models\Article;
 use App\Models\CareerEvent;
 use App\Models\HeroSection;
@@ -38,11 +39,13 @@ class DatabaseSchemaTest extends TestCase
         $this->assertTrue($superAdmin->isSuperAdmin());
         $this->assertTrue(password_verify('password', $superAdmin->password));
 
-        $this->assertDatabaseCount('learning_materials', 6);
-        $this->assertDatabaseCount('quizzes', 2);
-        $this->assertDatabaseCount('questions', 10);
-        $this->assertDatabaseCount('answer_options', 40);
-        $this->assertDatabaseCount('career_events', 4);
+        // Minimal sesuai §6.3; ContentSeeder menambah data demo riwayat admin (PBI-09).
+        $this->assertGreaterThanOrEqual(6, LearningMaterial::count());
+        $this->assertGreaterThanOrEqual(2, Quiz::count());
+        $this->assertGreaterThanOrEqual(10, Question::count());
+        $this->assertSame(Question::count() * 4, AnswerOption::count(), 'Setiap soal punya 4 opsi');
+        $this->assertGreaterThanOrEqual(4, CareerEvent::count());
+        $this->assertGreaterThan(10, LearningMaterial::where('admin_id', User::where('email', 'admin1@abislulus.test')->value('id'))->count(), 'Admin1 punya >10 materi untuk demo pagination');
         $this->assertDatabaseCount('articles', 3);
         $this->assertSame(1, HeroSection::active()->count());
         $this->assertGreaterThan(0, LearningReview::count());
