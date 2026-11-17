@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Tampilan pagination memakai Bootstrap 5 (bawaan Laravel = Tailwind).
         Paginator::useBootstrapFive();
 
         // Maks. 5 percobaan login per menit per kombinasi email + IP (PBI-02).
