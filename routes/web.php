@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 | Publik (PRD §8.4)
 |--------------------------------------------------------------------------
 */
-Route::view('/', 'landing')->name('home');
+Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/e-learning', [MaterialController::class, 'index'])->name('materials.index');
 Route::get('/e-learning/{material}', [MaterialController::class, 'show'])->name('materials.show');
 Route::get('/kegiatan', [EventController::class, 'index'])->name('events.index');
@@ -117,6 +117,7 @@ Route::middleware(['auth', 'role:super_admin'])
         Route::get('/dashboard', [SuperAdmin\DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('admins', SuperAdmin\AdminController::class);
+        Route::patch('/hero-sections/{hero_section}/toggle', [SuperAdmin\HeroSectionController::class, 'toggle'])->name('hero-sections.toggle');
         Route::resource('hero-sections', SuperAdmin\HeroSectionController::class);
         Route::resource('articles', SuperAdmin\ArticleController::class);
 

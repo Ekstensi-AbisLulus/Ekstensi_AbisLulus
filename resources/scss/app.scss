@@ -74,7 +74,7 @@ $navbar-light-active-color: $primary;
     justify-content: center;
     font-weight: 600;
     background-color: tint-color($primary, 85%);
-    color: $primary;
+    color: #1E40AF;
     object-fit: cover;
 
     &.avatar-lg {
@@ -112,10 +112,10 @@ $navbar-light-active-color: $primary;
     font-weight: 600;
 }
 
-// Aksi tabel: ikon lingkaran (lihat biru, edit hijau, hapus merah)
+// Aksi tabel: ikon lingkaran (lihat biru, edit hijau, hapus merah) dengan ukuran sentuh 44px.
 .btn-icon {
-    width: 2rem;
-    height: 2rem;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0;
     border-radius: 50%;
     display: inline-flex;
@@ -126,8 +126,13 @@ $navbar-light-active-color: $primary;
 
     &:hover { color: $white; filter: brightness(.92); }
 
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+
     &.btn-icon-view { background-color: $primary; }
-    &.btn-icon-edit { background-color: $success; }
+    &.btn-icon-edit { background-color: #15803D; }
     &.btn-icon-delete { background-color: $danger; }
 }
 
@@ -512,6 +517,27 @@ $auth-accent: #F59E0B; // oranye ilustrasi
 .history-empty > .bi { font-size: 3rem; color: $gray-400; }
 
 // --- Layout panel ---
+a[href],
+button:not(:disabled),
+select:not(:disabled),
+summary,
+label[for],
+input[type='checkbox']:not(:disabled),
+input[type='radio']:not(:disabled),
+input[type='file']:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
+.btn.disabled,
+[aria-disabled='true'] {
+    cursor: not-allowed;
+}
+
 .panel-sidebar {
     background-color: $white;
     box-shadow: $box-shadow-sm;
@@ -533,24 +559,31 @@ $auth-accent: #F59E0B; // oranye ilustrasi
         color: $body-color;
         border-radius: $border-radius;
         padding: .6rem .9rem;
+        min-height: 2.75rem;
         display: flex;
         align-items: center;
         gap: .75rem;
 
         &:hover { background-color: $gray-100; }
 
+        &:focus-visible {
+            outline: 2px solid $primary;
+            outline-offset: 2px;
+        }
+
         &.active {
             background-color: tint-color($primary, 90%);
-            color: $primary;
-            font-weight: 500;
+            color: #1E40AF;
+            font-weight: 600;
         }
     }
 
     .nav-heading {
         font-size: .75rem;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: .05em;
-        color: $gray-500;
+        letter-spacing: .04em;
+        color: #4B5563;
         padding: 1rem .9rem .25rem;
     }
 }
@@ -562,4 +595,297 @@ $auth-accent: #F59E0B; // oranye ilustrasi
     z-index: $zindex-sticky;
     background-color: $white;
     box-shadow: $box-shadow-sm;
+}
+
+// --- Form & komponen panel Super Admin / Admin ---
+.panel-card {
+    background-color: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $box-shadow-sm;
+}
+
+.panel-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #0B2A6F;
+}
+
+.panel-muted {
+    color: #4B5563;
+}
+
+.panel-form-label {
+    display: inline-block;
+    font-size: .9rem;
+    font-weight: 600;
+    color: $body-color;
+    margin-bottom: .4rem;
+}
+
+.panel-form-control,
+.panel-form-select {
+    min-height: 2.75rem;
+    border-color: #6B7280;
+    color: $body-color;
+    font-size: .9375rem;
+
+    &::placeholder {
+        color: #4B5563;
+        opacity: 1;
+    }
+
+    &:hover:not(:disabled):not([readonly]) {
+        border-color: #374151;
+    }
+
+    &:focus {
+        border-color: $primary;
+        box-shadow: 0 0 0 .2rem rgba($primary, .2);
+    }
+
+    &[readonly] {
+        background-color: #F3F4F6;
+        color: #374151;
+    }
+}
+
+.btn-panel {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    font-weight: 500;
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+}
+
+.btn-outline-secondary.btn-panel {
+    border-color: #4B5563;
+    color: #1F2937;
+
+    &:hover,
+    &:active {
+        background-color: #1F2937;
+        border-color: #1F2937;
+        color: $white;
+    }
+}
+
+.panel-switch {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    .form-check-input {
+        width: 2.75rem;
+        height: 1.5rem;
+        margin-top: 0;
+        border-color: #6B7280;
+        flex-shrink: 0;
+
+        &:focus {
+            box-shadow: 0 0 0 .2rem rgba($primary, .25);
+        }
+    }
+}
+
+.image-preview-frame {
+    border: 1px dashed #6B7280;
+    border-radius: $border-radius;
+    background-color: #F8FAFC;
+    padding: 1rem;
+    text-align: center;
+}
+
+.image-preview-media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: $border-radius-sm;
+    background-color: #E2E8F0;
+}
+
+.slug-prefix {
+    background-color: #F3F4F6;
+    border-color: #6B7280;
+    color: #374151;
+    font-size: .875rem;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .35rem .75rem;
+    border-radius: 50rem;
+    font-size: .8125rem;
+    font-weight: 600;
+
+    &.badge-status-active {
+        background-color: #DCFCE7;
+        color: #14532D;
+        border: 1px solid #15803D;
+    }
+
+    &.badge-status-inactive {
+        background-color: #F3F4F6;
+        color: #1F2937;
+        border: 1px solid #6B7280;
+    }
+}
+
+button.badge-status {
+    min-height: 2.75rem;
+    padding: .35rem .9rem;
+    transition: filter .15s ease, box-shadow .15s ease;
+
+    &:hover {
+        filter: brightness(.95);
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+}
+
+.table-thumb {
+    width: 96px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: $border-radius-sm;
+    background-color: #E2E8F0;
+    flex-shrink: 0;
+}
+
+.panel-table {
+    th {
+        font-size: .8125rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        color: #374151;
+        background-color: #F8FAFC;
+        border-bottom-width: 1px;
+        padding: .85rem 1rem;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+}
+
+// --- Hero banner publik & pratinjau ---
+.hero-banner {
+    position: relative;
+    overflow: hidden;
+    background-color: #0F172A;
+    color: $white;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+
+    @include media-breakpoint-up(lg) {
+        min-height: 460px;
+    }
+}
+
+.hero-banner-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(15, 23, 42, .86) 0%, rgba(15, 23, 42, .74) 55%, rgba(15, 23, 42, .62) 100%);
+}
+
+.hero-banner-content {
+    position: relative;
+    z-index: 2;
+    max-width: 42rem;
+}
+
+.hero-banner-subtitle {
+    color: #E2E8F0;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+}
+
+.hero-carousel {
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 3.25rem;
+        opacity: .9;
+    }
+
+    .carousel-control-icon-box {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
+        background-color: rgba(15, 23, 42, .75);
+        border: 1px solid rgba(255, 255, 255, .4);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+// --- Kartu & halaman artikel ---
+.article-card {
+    transition: transform .15s ease, box-shadow .15s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $box-shadow;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .article-card {
+        transition: none;
+
+        &:hover {
+            transform: none;
+        }
+    }
+}
+
+.article-card-cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    background-color: #E2E8F0;
+}
+
+.article-detail-cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: $border-radius-lg;
+    background-color: #E2E8F0;
+}
+
+.article-body {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: $body-color;
 }

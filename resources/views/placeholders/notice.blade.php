@@ -6,7 +6,7 @@
     @endif
     @if (! empty($actionUrl) && ! empty($actionLabel))
         <div class="mt-3">
-            <a href="{{ $actionUrl }}" class="btn btn-primary">
+            <a href="{{ $actionUrl }}" class="btn btn-primary btn-panel">
                 <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ $actionLabel }}
             </a>
         </div>

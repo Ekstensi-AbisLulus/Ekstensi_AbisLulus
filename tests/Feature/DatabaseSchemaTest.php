@@ -46,8 +46,8 @@ class DatabaseSchemaTest extends TestCase
         $this->assertSame(Question::count() * 4, AnswerOption::count(), 'Setiap soal punya 4 opsi');
         $this->assertGreaterThanOrEqual(4, CareerEvent::count());
         $this->assertGreaterThan(10, LearningMaterial::where('admin_id', User::where('email', 'admin1@abislulus.test')->value('id'))->count(), 'Admin1 punya >10 materi untuk demo pagination');
-        $this->assertDatabaseCount('articles', 3);
-        $this->assertSame(1, HeroSection::active()->count());
+        $this->assertDatabaseCount('articles', 4);
+        $this->assertSame(2, HeroSection::active()->count());
         $this->assertGreaterThan(0, LearningReview::count());
         $this->assertGreaterThan(0, Testimonial::count());
 
