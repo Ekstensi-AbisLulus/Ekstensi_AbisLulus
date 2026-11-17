@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
         // Data contoh hanya untuk development (PRD §6.3).
         if (! app()->isProduction()) {
             $this->call(ContentSeeder::class);
+            $this->call(ProfileHistorySeeder::class);
         }
     }
 }
