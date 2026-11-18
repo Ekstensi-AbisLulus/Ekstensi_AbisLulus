@@ -71,6 +71,14 @@ Catatan:
 
 ## 4. Menjalankan Dusk
 
+> **Kenapa server Dusk tidak memakai `php artisan serve`?**
+> Aplikasi membatasi upload 2 MB (foto profil, thumbnail) dan 3 MB (gambar hero, sampul artikel), sedangkan PHP
+> bawaan (mis. Herd Lite) sering memakai `upload_max_filesize = 2M`. File yang lebih besar langsung ditolak PHP sehingga
+> yang tampil pesan bawaan "The … failed to upload." alih-alih pesan validasi aplikasi, dan test upload gagal.
+> `php artisan serve` tidak bisa meneruskan opsi `-d`, jadi server Dusk dijalankan langsung dengan server PHP bawaan
+> (cara kerjanya sama dengan `php artisan serve`) dan batas upload dinaikkan **khusus untuk proses ini** —
+> `php.ini` global tidak perlu diubah.
+
 ### Windows (3 terminal)
 
 Di Windows, ChromeDriver dijalankan **manual** di port 9515.
@@ -81,9 +89,11 @@ php artisan dusk:chrome-driver --detect   # sekali saja / saat Chrome update
 vendor\laravel\dusk\bin\chromedriver-win.exe --port=9515
 ```
 
-**Terminal 2 — server aplikasi (mode Dusk)**
+**Terminal 2 — server aplikasi (mode Dusk), dari root project**
 ```powershell
-php artisan serve --env=dusk.local --port=8001
+cd public
+$env:APP_ENV='dusk.local'
+php -d upload_max_filesize=10M -d post_max_size=12M -S 127.0.0.1:8001 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
 ```
 
 **Terminal 3 — jalankan test**
@@ -101,7 +111,7 @@ Di Mac, ChromeDriver dijalankan otomatis oleh `DuskTestCase::prepare()`.
 ```bash
 php artisan dusk:chrome-driver --detect   # sekali saja / saat Chrome update
 chmod +x vendor/laravel/dusk/bin/chromedriver-mac-*   # bila muncul "permission denied"
-php artisan serve --env=dusk.local --port=8001
+cd public && APP_ENV=dusk.local php -d upload_max_filesize=10M -d post_max_size=12M -S 127.0.0.1:8001 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
 ```
 
 **Terminal 2 — jalankan test**
@@ -248,6 +258,7 @@ class AdminProfileTest extends DuskTestCase
 |---|---|
 | `session not created: This version of ChromeDriver only supports Chrome version ...` | Jalankan `php artisan dusk:chrome-driver --detect`, lalu restart ChromeDriver. |
 | `Failed to connect to localhost port 9515` | ChromeDriver belum berjalan (Windows: Terminal 1). |
-| Halaman kosong / `Connection refused` di screenshot | Server `php artisan serve --env=dusk.local --port=8001` belum berjalan, atau `APP_URL` tidak sama dengan port. |
+| Halaman kosong / `Connection refused` di screenshot | Server Dusk (Terminal 2, lihat bagian 4) belum berjalan, atau `APP_URL` tidak sama dengan port. |
+| Test upload gagal dengan pesan "The … failed to upload." | Server Dusk dijalankan dengan `php artisan serve` (batas upload PHP 2 MB). Jalankan ulang dengan perintah `php -d upload_max_filesize=10M …` di bagian 4. |
 | Data development hilang | `DB_DATABASE` di `.env.dusk.local` salah — harus `abislulus_dusk`. |
 | Submit form validasi negatif tidak terjadi apa-apa | Lupa memanggil `->disableHtmlValidation()` setelah `visit()`. |
