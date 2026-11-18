@@ -17,7 +17,7 @@
     </div>
 
     <div class="card p-3 p-md-4">
-        <form method="POST" action="{{ route('admin.materials.store') }}" enctype="multipart/form-data" novalidate>
+        <form method="POST" action="{{ route('admin.materials.store') }}" dusk="material-form" enctype="multipart/form-data" novalidate>
             @csrf
 
             <div class="mb-3">
@@ -26,7 +26,7 @@
                 </label>
                 <input
                     type="text"
-                    id="title"
+                    id="title" dusk="title-input"
                     name="title"
                     value="{{ old('title') }}"
                     maxlength="200"
@@ -50,7 +50,7 @@
                     <span class="input-group-text"><i class="bi bi-play-btn" aria-hidden="true"></i></span>
                     <input
                         type="url"
-                        id="video_url"
+                        id="video_url" dusk="video-url-input"
                         name="video_url"
                         value="{{ old('video_url') }}"
                         maxlength="2048"
@@ -72,7 +72,7 @@
                     Deskripsi Materi <span class="text-danger" aria-hidden="true">*</span>
                 </label>
                 <textarea
-                    id="description"
+                    id="description" dusk="description-input"
                     name="description"
                     rows="5"
                     required
@@ -90,7 +90,7 @@
                     <label for="thumbnail" class="form-label fw-medium">Unggah Thumbnail (Opsional)</label>
                     <input
                         type="file"
-                        id="thumbnail"
+                        id="thumbnail" dusk="thumbnail-input"
                         name="thumbnail"
                         accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                         class="form-control @error('thumbnail') is-invalid @enderror"
@@ -107,7 +107,7 @@
                     <label for="thumbnail_url" class="form-label fw-medium">Atau URL Thumbnail (Opsional)</label>
                     <input
                         type="url"
-                        id="thumbnail_url"
+                        id="thumbnail_url" dusk="thumbnail-url-input"
                         name="thumbnail_url"
                         value="{{ old('thumbnail_url') }}"
                         maxlength="2048"
@@ -130,7 +130,7 @@
                         class="form-check-input @error('is_published') is-invalid @enderror"
                         type="checkbox"
                         role="switch"
-                        id="is_published"
+                        id="is_published" dusk="publish-switch"
                         name="is_published"
                         value="1"
                         @checked((bool) old('is_published', true))
@@ -146,7 +146,7 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2 pt-3 border-top">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" dusk="submit-button">
                     <i class="bi bi-check-lg me-1" aria-hidden="true"></i>Simpan Materi
                 </button>
                 <a href="{{ route('admin.materials.index') }}" class="btn btn-outline-secondary">

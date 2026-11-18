@@ -16,7 +16,7 @@
                     <div class="card p-3 p-md-4 mb-4">
                         @if ($material->videoEmbedUrl())
                             <div class="ratio ratio-16x9 rounded overflow-hidden bg-dark mb-3">
-                                <iframe
+                                <iframe dusk="video-embed"
                                     src="{{ $material->videoEmbedUrl() }}"
                                     title="Video {{ $material->title }}"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -27,8 +27,8 @@
 
                         <div class="d-flex flex-column flex-md-row align-items-md-start justify-content-between gap-3 mb-3">
                             <div>
-                                <h1 class="h3 fw-bold mb-2">{{ $material->title }}</h1>
-                                <div class="d-flex flex-wrap align-items-center gap-3 small text-secondary">
+                                <h1 class="h3 fw-bold mb-2" dusk="title">{{ $material->title }}</h1>
+                                <div class="d-flex flex-wrap align-items-center gap-3 small text-secondary" dusk="meta">
                                     <span>
                                         <i class="bi bi-person-circle me-1" aria-hidden="true"></i>{{ $material->admin?->name ?? 'Tim AbisLulus' }}
                                     </span>
@@ -48,7 +48,7 @@
                             </div>
 
                             @if ($material->quizzes->isNotEmpty())
-                                <a href="{{ route('quizzes.show', $material->quizzes->first()) }}" class="btn btn-primary flex-shrink-0">
+                                <a href="{{ route('quizzes.show', $material->quizzes->first()) }}" class="btn btn-primary flex-shrink-0" dusk="quiz-button">
                                     <i class="bi bi-patch-question me-1" aria-hidden="true"></i>Mulai Kuis
                                 </a>
                             @endif
@@ -57,7 +57,7 @@
                         <hr>
 
                         <h2 class="h5 fw-bold mb-3">Deskripsi Materi</h2>
-                        <div class="text-body" style="white-space: pre-line;">{{ $material->description }}</div>
+                        <div class="text-body" style="white-space: pre-line;" dusk="description">{{ $material->description }}</div>
 
                         <div class="mt-4 pt-3 border-top small text-secondary">
                             <i class="bi bi-link-45deg me-1" aria-hidden="true"></i>Jika video tidak tampil di atas, buka langsung melalui tautan:
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="col-12 col-lg-4">
-                    <div class="card p-3 p-md-4">
+                    <div class="card p-3 p-md-4" dusk="reviews">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <h2 class="h5 fw-bold mb-0">Rating &amp; Ulasan</h2>
                             @if ($material->average_rating !== null)

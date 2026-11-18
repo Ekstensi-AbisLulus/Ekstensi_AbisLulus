@@ -20,7 +20,7 @@
         </div>
         <button
             type="button"
-            class="btn btn-outline-secondary align-self-start align-self-md-center"
+            class="btn btn-outline-secondary align-self-start align-self-md-center" dusk="back-button"
             data-bs-toggle="modal"
             data-bs-target="#confirmCancelModal"
         >
@@ -29,7 +29,7 @@
     </div>
 
     @if ($errors->any())
-        <div class="alert alert-danger d-flex align-items-start gap-2 mb-4" role="alert">
+        <div class="alert alert-danger d-flex align-items-start gap-2 mb-4" role="alert" dusk="server-alert">
             <i class="bi bi-exclamation-triangle-fill mt-1" aria-hidden="true"></i>
             <div>
                 <div class="fw-semibold">Perubahan belum dapat disimpan. Periksa kembali input berikut:</div>
@@ -42,7 +42,7 @@
         </div>
     @endif
 
-    <div id="clientValidationAlert" class="alert alert-danger d-none align-items-start gap-2 mb-4" role="alert">
+    <div id="clientValidationAlert" dusk="client-alert" class="alert alert-danger d-none align-items-start gap-2 mb-4" role="alert">
         <i class="bi bi-exclamation-triangle-fill mt-1" aria-hidden="true"></i>
         <div>
             <div class="fw-semibold">Validasi gagal sebelum menyimpan perubahan:</div>
@@ -52,7 +52,7 @@
 
     <div class="card p-3 p-md-4">
         <form
-            id="editMaterialForm"
+            id="editMaterialForm" dusk="material-form"
             method="POST"
             action="{{ route('admin.materials.update', $material) }}"
             enctype="multipart/form-data"
@@ -67,7 +67,7 @@
                 </label>
                 <input
                     type="text"
-                    id="title"
+                    id="title" dusk="title-input"
                     name="title"
                     value="{{ old('title', $material->title) }}"
                     maxlength="200"
@@ -77,7 +77,7 @@
                     @error('title') aria-invalid="true" aria-describedby="title-error" @else aria-describedby="title-hint" @enderror
                 >
                 <div class="invalid-feedback @error('title') d-block @enderror" id="title-error">
-                    {{ $errors->first('title', 'Judul materi wajib diisi (maksimal 200 karakter).') }}
+                    {{ $errors->has('title') ? $errors->first('title') : 'Judul materi wajib diisi (maksimal 200 karakter).' }}
                 </div>
                 @unless ($errors->has('title'))
                     <div class="form-text" id="title-hint">Maksimal 200 karakter.</div>
@@ -92,7 +92,7 @@
                     <span class="input-group-text"><i class="bi bi-play-btn" aria-hidden="true"></i></span>
                     <input
                         type="url"
-                        id="video_url"
+                        id="video_url" dusk="video-url-input"
                         name="video_url"
                         value="{{ old('video_url', $material->video_url) }}"
                         maxlength="2048"
@@ -103,7 +103,7 @@
                     >
                 </div>
                 <div class="invalid-feedback @error('video_url') d-block @enderror" id="video-url-error">
-                    {{ $errors->first('video_url', 'Link video wajib berupa URL yang valid (http/https).') }}
+                    {{ $errors->has('video_url') ? $errors->first('video_url') : 'Link video wajib berupa URL yang valid (http/https).' }}
                 </div>
                 @unless ($errors->has('video_url'))
                     <div class="form-text" id="video-url-hint">Masukkan URL video yang valid (misalnya tautan YouTube atau Google Drive).</div>
@@ -115,7 +115,7 @@
                     Deskripsi Materi <span class="text-danger" aria-hidden="true">*</span>
                 </label>
                 <textarea
-                    id="description"
+                    id="description" dusk="description-input"
                     name="description"
                     rows="5"
                     required
@@ -124,7 +124,7 @@
                     @error('description') aria-invalid="true" aria-describedby="description-error" @enderror
                 >{{ old('description', $material->description) }}</textarea>
                 <div class="invalid-feedback @error('description') d-block @enderror" id="description-error">
-                    {{ $errors->first('description', 'Deskripsi materi wajib diisi.') }}
+                    {{ $errors->has('description') ? $errors->first('description') : 'Deskripsi materi wajib diisi.' }}
                 </div>
             </div>
 
@@ -134,7 +134,7 @@
                     <img
                         src="{{ $material->thumbnailSrc() }}"
                         alt="Thumbnail {{ $material->title }}"
-                        width="200"
+                        width="200" dusk="current-thumbnail"
                         height="112"
                         class="rounded border object-fit-cover"
                     >
@@ -146,7 +146,7 @@
                     <label for="thumbnail" class="form-label fw-medium">Ganti dengan Unggah Thumbnail (Opsional)</label>
                     <input
                         type="file"
-                        id="thumbnail"
+                        id="thumbnail" dusk="thumbnail-input"
                         name="thumbnail"
                         accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                         class="form-control @error('thumbnail') is-invalid @enderror"
@@ -163,7 +163,7 @@
                     <label for="thumbnail_url" class="form-label fw-medium">Atau URL Thumbnail (Opsional)</label>
                     <input
                         type="url"
-                        id="thumbnail_url"
+                        id="thumbnail_url" dusk="thumbnail-url-input"
                         name="thumbnail_url"
                         value="{{ old('thumbnail_url', $existingThumbnailUrl) }}"
                         maxlength="2048"
@@ -186,7 +186,7 @@
                         class="form-check-input @error('is_published') is-invalid @enderror"
                         type="checkbox"
                         role="switch"
-                        id="is_published"
+                        id="is_published" dusk="publish-switch"
                         name="is_published"
                         value="1"
                         @checked((bool) old('is_published', $material->is_published))
@@ -204,7 +204,7 @@
             <div class="d-flex flex-wrap gap-2 pt-3 border-top">
                 <button
                     type="button"
-                    id="openSaveModalBtn"
+                    id="openSaveModalBtn" dusk="save-button"
                     class="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#confirmSaveModal"
@@ -213,7 +213,7 @@
                 </button>
                 <button
                     type="button"
-                    class="btn btn-outline-secondary"
+                    class="btn btn-outline-secondary" dusk="cancel-button"
                     data-bs-toggle="modal"
                     data-bs-target="#confirmCancelModal"
                 >
@@ -224,7 +224,7 @@
     </div>
 
     {{-- Pop-up Modal Konfirmasi Simpan Perubahan --}}
-    <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmSaveModal" dusk="save-modal" tabindex="-1" aria-labelledby="confirmSaveModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -240,10 +240,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" dusk="save-review">
                         Periksa Kembali
                     </button>
-                    <button type="submit" form="editMaterialForm" class="btn btn-primary">
+                    <button type="submit" form="editMaterialForm" class="btn btn-primary" dusk="save-confirm">
                         <i class="bi bi-check-lg me-1" aria-hidden="true"></i>Ya, Simpan Perubahan
                     </button>
                 </div>
@@ -252,7 +252,7 @@
     </div>
 
     {{-- Pop-up Modal Konfirmasi & Validasi Batal Perubahan --}}
-    <div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-labelledby="confirmCancelModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmCancelModal" dusk="cancel-modal" tabindex="-1" aria-labelledby="confirmCancelModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -268,10 +268,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" dusk="cancel-keep">
                         Tetap Mengedit
                     </button>
-                    <a href="{{ route('admin.materials.index') }}" class="btn btn-danger">
+                    <a href="{{ route('admin.materials.index') }}" class="btn btn-danger" dusk="cancel-confirm">
                         Ya, Batalkan Perubahan
                     </a>
                 </div>

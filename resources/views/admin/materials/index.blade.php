@@ -11,7 +11,7 @@
                 Kelola materi video E-Learning. Hanya materi berstatus <strong>Dipublikasikan</strong> yang tampil untuk pengguna.
             </p>
         </div>
-        <a href="{{ route('admin.materials.create') }}" class="btn btn-primary align-self-start align-self-md-center">
+        <a href="{{ route('admin.materials.create') }}" class="btn btn-primary align-self-start align-self-md-center" dusk="create-button">
             <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Tambah Materi Baru
         </a>
     </div>
@@ -24,7 +24,7 @@
                     <span class="input-group-text bg-white"><i class="bi bi-search text-secondary" aria-hidden="true"></i></span>
                     <input
                         type="search"
-                        id="search"
+                        id="search" dusk="search-input"
                         name="search"
                         value="{{ $search }}"
                         placeholder="Ketik judul materi pembelajaran..."
@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="col-12 col-md-4 col-lg-3 d-flex gap-2">
-                <button type="submit" class="btn btn-primary flex-grow-1">Cari</button>
+                <button type="submit" class="btn btn-primary flex-grow-1" dusk="search-submit">Cari</button>
                 @if ($search !== '')
-                    <a href="{{ route('admin.materials.index') }}" class="btn btn-outline-secondary">Reset</a>
+                    <a href="{{ route('admin.materials.index') }}" class="btn btn-outline-secondary" dusk="search-reset">Reset</a>
                 @endif
             </div>
         </form>
@@ -43,12 +43,12 @@
 
     <div class="card overflow-hidden">
         @if ($materials->isEmpty())
-            <div class="p-5 text-center text-secondary">
+            <div class="p-5 text-center text-secondary" dusk="empty-state">
                 <i class="bi bi-collection-play fs-1 d-block mb-2" aria-hidden="true"></i>
                 @if ($search !== '')
                     <h3 class="h6 fw-semibold text-body mb-1">Materi tidak ditemukan</h3>
                     <p class="small mb-3">Tidak ada materi dengan judul yang memuat <strong>"{{ $search }}"</strong>.</p>
-                    <a href="{{ route('admin.materials.index') }}" class="btn btn-outline-secondary">Tampilkan Semua Materi</a>
+                    <a href="{{ route('admin.materials.index') }}" class="btn btn-outline-secondary" dusk="show-all-button">Tampilkan Semua Materi</a>
                 @else
                     <h3 class="h6 fw-semibold text-body mb-1">Belum ada materi pembelajaran</h3>
                     <p class="small mb-3">Tambahkan materi pembelajaran video pertama untuk mulai ditampilkan di halaman E-Learning.</p>
@@ -59,7 +59,7 @@
             </div>
         @else
             <div class="table-responsive">
-                <table class="table align-middle mb-0">
+                <table class="table align-middle mb-0" dusk="materials-table">
                     <thead class="table-light">
                         <tr>
                             <th scope="col" class="ps-4" style="width: 44px;">
@@ -74,7 +74,7 @@
                     </thead>
                     <tbody>
                         @foreach ($materials as $material)
-                            <tr>
+                            <tr dusk="material-row-{{ $material->id }}">
                                 <td class="ps-4">
                                     <input
                                         class="form-check-input"
@@ -121,7 +121,7 @@
                                     <div class="d-inline-flex align-items-center gap-1">
                                         <a
                                             href="{{ route('admin.materials.show', $material) }}"
-                                            class="btn-icon btn-icon-view"
+                                            class="btn-icon btn-icon-view" dusk="view-{{ $material->id }}"
                                             title="Lihat Detail"
                                             aria-label="Lihat {{ $material->title }}"
                                         >
@@ -130,7 +130,7 @@
                                         @can('update', $material)
                                             <a
                                                 href="{{ route('admin.materials.edit', $material) }}"
-                                                class="btn-icon btn-icon-edit"
+                                                class="btn-icon btn-icon-edit" dusk="edit-{{ $material->id }}"
                                                 title="Ubah Materi"
                                                 aria-label="Ubah {{ $material->title }}"
                                             >
@@ -140,7 +140,7 @@
                                         @can('delete', $material)
                                             <button
                                                 type="button"
-                                                class="btn-icon btn-icon-delete"
+                                                class="btn-icon btn-icon-delete" dusk="delete-{{ $material->id }}"
                                                 title="Hapus Materi"
                                                 aria-label="Hapus {{ $material->title }}"
                                                 data-bs-toggle="modal"
@@ -161,7 +161,7 @@
                 @can('delete', $material)
                     <div
                         class="modal fade"
-                        id="deleteMaterialModal-{{ $material->id }}"
+                        id="deleteMaterialModal-{{ $material->id }}" dusk="delete-modal-{{ $material->id }}"
                         tabindex="-1"
                         aria-labelledby="deleteMaterialModalLabel-{{ $material->id }}"
                         aria-hidden="true"
@@ -172,7 +172,7 @@
                                     <h3 class="modal-title h6 fw-bold mb-0" id="deleteMaterialModalLabel-{{ $material->id }}">
                                         <i class="bi bi-exclamation-triangle-fill text-danger me-2" aria-hidden="true"></i>Konfirmasi Hapus Materi
                                     </h3>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup" dusk="delete-close-{{ $material->id }}"></button>
                                 </div>
                                 <div class="modal-body">
                                     <p class="mb-2">
@@ -184,13 +184,13 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" dusk="delete-cancel-{{ $material->id }}">
                                         Batal
                                     </button>
                                     <form method="POST" action="{{ route('admin.materials.destroy', $material) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
+                                        <button type="submit" class="btn btn-danger" dusk="delete-confirm-{{ $material->id }}">
                                             <i class="bi bi-trash me-1" aria-hidden="true"></i>Ya, Hapus Materi
                                         </button>
                                     </form>
@@ -202,7 +202,7 @@
             @endforeach
 
             @if ($materials->hasPages())
-                <div class="px-4 py-3 border-top">
+                <div class="px-4 py-3 border-top" dusk="pagination">
                     {{ $materials->links() }}
                 </div>
             @endif

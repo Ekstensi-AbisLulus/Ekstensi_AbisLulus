@@ -24,13 +24,13 @@
                             </span>
                             <input
                                 type="search"
-                                id="search-material"
+                                id="search-material" dusk="search-input"
                                 name="search"
                                 value="{{ $search }}"
                                 placeholder="Cari judul materi..."
                                 class="form-control border-start-0"
                             >
-                            <button type="submit" class="btn btn-primary">Cari</button>
+                            <button type="submit" class="btn btn-primary" dusk="search-submit">Cari</button>
                             @if ($search !== '')
                                 <a href="{{ route('materials.index') }}" class="btn btn-outline-secondary">Reset</a>
                             @endif
@@ -65,7 +65,7 @@
                 <div class="row g-4">
                     @foreach ($materials as $material)
                         <div class="col-12 col-md-6 col-lg-4">
-                            <article class="card h-100 d-flex flex-column overflow-hidden">
+                            <article dusk="material-card" class="card h-100 d-flex flex-column overflow-hidden">
                                 <a href="{{ route('materials.show', $material) }}" class="text-decoration-none">
                                     @if ($material->thumbnailSrc())
                                         <img
@@ -107,7 +107,7 @@
                                         {{ \Illuminate\Support\Str::limit($material->description, 110) }}
                                     </p>
 
-                                    <a href="{{ route('materials.show', $material) }}" class="btn btn-primary w-100 mt-auto">
+                                    <a href="{{ route('materials.show', $material) }}" class="btn btn-primary w-100 mt-auto" dusk="start-button-{{ $material->id }}">
                                         <i class="bi bi-play-fill me-1" aria-hidden="true"></i>Mulai Belajar
                                     </a>
                                 </div>

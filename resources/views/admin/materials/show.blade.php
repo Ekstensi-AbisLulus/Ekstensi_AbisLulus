@@ -8,9 +8,9 @@
         <div>
             <div class="d-flex align-items-center gap-2 mb-1">
                 @if ($material->is_published)
-                    <span class="badge text-bg-success">Dipublikasikan</span>
+                    <span class="badge text-bg-success" dusk="status-badge">Dipublikasikan</span>
                 @else
-                    <span class="badge text-bg-secondary">Draf</span>
+                    <span class="badge text-bg-secondary" dusk="status-badge">Draf</span>
                 @endif
                 <span class="text-secondary small">
                     Diunggah {{ $material->created_at?->format('d M Y, H:i') }} oleh <strong>{{ $material->admin?->name ?? 'Admin' }}</strong>
@@ -21,7 +21,7 @@
 
         <div class="d-flex flex-wrap gap-2 align-self-start align-self-md-center">
             @can('update', $material)
-                <a href="{{ route('admin.materials.edit', $material) }}" class="btn btn-primary">
+                <a href="{{ route('admin.materials.edit', $material) }}" class="btn btn-primary" dusk="edit-button">
                     <i class="bi bi-pencil me-1" aria-hidden="true"></i>Ubah Materi
                 </a>
             @endcan
@@ -30,7 +30,7 @@
                     type="button"
                     class="btn btn-danger"
                     data-bs-toggle="modal"
-                    data-bs-target="#deleteMaterialModal"
+                    data-bs-target="#deleteMaterialModal" dusk="delete-button"
                 >
                     <i class="bi bi-trash me-1" aria-hidden="true"></i>Hapus Materi
                 </button>
@@ -53,7 +53,7 @@
 
                 @if ($material->videoEmbedUrl())
                     <div class="ratio ratio-16x9 rounded overflow-hidden bg-dark mb-3">
-                        <iframe
+                        <iframe dusk="video-embed"
                             src="{{ $material->videoEmbedUrl() }}"
                             title="Video {{ $material->title }}"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -72,7 +72,7 @@
 
             <div class="card p-3 p-md-4">
                 <h3 class="h6 fw-bold mb-3">Deskripsi Materi</h3>
-                <div class="text-body" style="white-space: pre-line;">{{ $material->description }}</div>
+                <div class="text-body" style="white-space: pre-line;" dusk="description">{{ $material->description }}</div>
             </div>
         </div>
 
@@ -83,7 +83,7 @@
                     <img
                         src="{{ $material->thumbnailSrc() }}"
                         alt="Thumbnail {{ $material->title }}"
-                        class="img-fluid rounded border mb-2"
+                        class="img-fluid rounded border mb-2" dusk="thumbnail"
                     >
                 @else
                     <div class="rounded bg-light border p-4 text-center text-secondary">
@@ -95,7 +95,7 @@
 
             <div class="card p-3 p-md-4">
                 <h3 class="h6 fw-bold mb-3">Ringkasan Informasi</h3>
-                <dl class="row small mb-0">
+                <dl class="row small mb-0" dusk="summary">
                     <dt class="col-5 text-secondary">Pembuat</dt>
                     <dd class="col-7 fw-medium">{{ $material->admin?->name ?? 'Admin' }}</dd>
 
@@ -122,7 +122,7 @@
     @can('delete', $material)
         <div
             class="modal fade"
-            id="deleteMaterialModal"
+            id="deleteMaterialModal" dusk="delete-modal"
             tabindex="-1"
             aria-labelledby="deleteMaterialModalLabel"
             aria-hidden="true"
@@ -133,7 +133,7 @@
                         <h3 class="modal-title h6 fw-bold mb-0" id="deleteMaterialModalLabel">
                             <i class="bi bi-exclamation-triangle-fill text-danger me-2" aria-hidden="true"></i>Konfirmasi Hapus Materi
                         </h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup" dusk="delete-close"></button>
                     </div>
                     <div class="modal-body">
                         <p class="mb-2">
@@ -145,13 +145,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" dusk="delete-cancel">
                             Batal
                         </button>
                         <form method="POST" action="{{ route('admin.materials.destroy', $material) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="btn btn-danger" dusk="delete-confirm">
                                 <i class="bi bi-trash me-1" aria-hidden="true"></i>Ya, Hapus Materi
                             </button>
                         </form>
