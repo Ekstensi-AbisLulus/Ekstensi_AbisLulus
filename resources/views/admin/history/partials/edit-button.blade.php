@@ -5,7 +5,7 @@
     Param: $route (nama route), $model, $label (judul item, untuk aria-label).
 --}}
 @if (Route::has($route))
-    <a href="{{ route($route, $model) }}" class="btn-icon btn-icon-edit" title="Edit" aria-label="Edit {{ $label }}">
+    <a href="{{ route($route, $model) }}" class="btn-icon btn-icon-edit" title="Edit" dusk="history-edit" aria-label="Edit {{ $label }}">
         <i class="bi bi-pencil-square" aria-hidden="true"></i>
     </a>
 @else

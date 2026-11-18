@@ -31,11 +31,11 @@
                         @foreach ($tabs as $key => $meta)
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center gap-2 {{ $tab === $key ? 'active' : '' }}"
-                                    href="{{ route('admin.history', ['tab' => $key]) }}"
+                                    href="{{ route('admin.history', ['tab' => $key]) }}" dusk="history-tab-{{ $key }}"
                                     @if ($tab === $key) aria-current="page" @endif>
                                     <i class="bi bi-{{ $meta['icon'] }}" aria-hidden="true"></i>
                                     <span>{{ $meta['label'] }}</span>
-                                    <span class="badge rounded-pill {{ $tab === $key ? 'text-bg-primary' : 'text-bg-light border' }}">{{ $counts[$key] }}</span>
+                                    <span dusk="history-count-{{ $key }}" class="badge rounded-pill {{ $tab === $key ? 'text-bg-primary' : 'text-bg-light border' }}">{{ $counts[$key] }}</span>
                                 </a>
                             </li>
                         @endforeach
@@ -46,17 +46,17 @@
                         <input type="hidden" name="tab" value="{{ $tab }}">
                         <div class="input-group history-search">
                             <span class="input-group-text bg-white"><i class="bi bi-search" aria-hidden="true"></i></span>
-                            <input type="search" name="q" value="{{ $search }}" class="form-control border-start-0"
+                            <input type="search" name="q" dusk="history-search-input" value="{{ $search }}" class="form-control border-start-0"
                                 placeholder="Cari judul {{ strtolower($tabs[$tab]['label']) }}…" aria-label="Cari judul" maxlength="100">
                         </div>
-                        <button type="submit" class="btn btn-primary">Cari</button>
+                        <button type="submit" class="btn btn-primary" dusk="history-search-submit">Cari</button>
                         @if ($search !== '')
-                            <a href="{{ route('admin.history', ['tab' => $tab]) }}" class="btn btn-light">Reset</a>
+                            <a href="{{ route('admin.history', ['tab' => $tab]) }}" class="btn btn-light" dusk="history-search-reset">Reset</a>
                         @endif
                     </form>
 
                     @if ($items->isEmpty())
-                        <div class="text-center text-secondary py-5 history-empty">
+                        <div class="text-center text-secondary py-5 history-empty" dusk="history-empty">
                             <i class="bi bi-inbox d-block mb-2" aria-hidden="true"></i>
                             <p class="fw-semibold text-body mb-1">Belum ada riwayat aktivitas</p>
                             <p class="small mb-0">
@@ -69,7 +69,7 @@
                         </div>
                     @else
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0 history-table">
+                            <table class="table table-hover align-middle mb-0 history-table" dusk="history-table">
                                 @switch($tab)
                                     @case('quizzes')
                                         <thead>
@@ -171,7 +171,7 @@
                         </div>
 
                         @if ($items->hasPages())
-                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-4">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-4" dusk="history-pagination">
                                 <p class="small text-secondary mb-0">
                                     Menampilkan {{ $items->firstItem() }}–{{ $items->lastItem() }} dari {{ $items->total() }}
                                 </p>
