@@ -95,7 +95,7 @@ class Article extends Model
             return $this->cover_image_url;
         }
 
-        return Storage::disk('public')->url($this->cover_image_url);
+        return asset('storage/'.$this->cover_image_url);
     }
 
     /**

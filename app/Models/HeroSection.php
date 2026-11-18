@@ -49,7 +49,7 @@ class HeroSection extends Model
             return $this->image_url;
         }
 
-        return Storage::disk('public')->url($this->image_url);
+        return asset('storage/'.$this->image_url);
     }
 
     /**
