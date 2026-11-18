@@ -79,6 +79,11 @@ Catatan:
 > (cara kerjanya sama dengan `php artisan serve`) dan batas upload dinaikkan **khusus untuk proses ini** —
 > `php.ini` global tidak perlu diubah.
 
+> **Server Dusk hanya untuk menjalankan test.** Server di port 8001 (mode `dusk.local`) memakai database
+> `abislulus_dusk`, yang **dikosongkan setelah setiap test** oleh `DatabaseMigrations`. Jangan membukanya untuk
+> mencoba aplikasi secara manual, dan jangan menjalankan server development di port yang sama secara bersamaan:
+> matikan server development sebelum menjalankan Dusk, lalu matikan server Dusk (Ctrl+C) setelah selesai.
+
 ### Windows (3 terminal)
 
 Di Windows, ChromeDriver dijalankan **manual** di port 9515.
@@ -259,6 +264,7 @@ class AdminProfileTest extends DuskTestCase
 | `session not created: This version of ChromeDriver only supports Chrome version ...` | Jalankan `php artisan dusk:chrome-driver --detect`, lalu restart ChromeDriver. |
 | `Failed to connect to localhost port 9515` | ChromeDriver belum berjalan (Windows: Terminal 1). |
 | Halaman kosong / `Connection refused` di screenshot | Server Dusk (Terminal 2, lihat bagian 4) belum berjalan, atau `APP_URL` tidak sama dengan port. |
+| Membuka aplikasi di browser muncul `Table 'abislulus_dusk.sessions' doesn't exist` | Yang terbuka adalah server Dusk (database test sudah dikosongkan). Matikan server Dusk, lalu jalankan server development biasa (`php artisan serve`; tambahkan `--port=8001` bila port 8000 dipakai Apache/XAMPP). |
 | Test upload gagal dengan pesan "The … failed to upload." | Server Dusk dijalankan dengan `php artisan serve` (batas upload PHP 2 MB). Jalankan ulang dengan perintah `php -d upload_max_filesize=10M …` di bagian 4. |
 | Data development hilang | `DB_DATABASE` di `.env.dusk.local` salah — harus `abislulus_dusk`. |
 | Submit form validasi negatif tidak terjadi apa-apa | Lupa memanggil `->disableHtmlValidation()` setelah `visit()`. |

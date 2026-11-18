@@ -169,6 +169,119 @@ Biarkan kedua terminal tetap berjalan selama aplikasi digunakan.
 
 ---
 
+## Menjalankan Test
+
+Proyek ini memiliki dua jenis test:
+
+| Jenis | Lokasi | Perintah |
+|---|---|---|
+| Feature & Unit Test | `tests/Feature`, `tests/Unit` | `php artisan test` |
+| Browser Test (Laravel Dusk) | `tests/Browser` | `php artisan dusk` |
+
+### Feature & Unit Test
+
+Tidak memerlukan persiapan tambahan (memakai database SQLite di memori):
+
+```bash
+php artisan test
+```
+
+### Browser Test (Laravel Dusk)
+
+Dusk menjalankan skenario test plan langsung di browser Chrome. Panduan lengkap, termasuk aturan penulisan test tim, ada di [docs/dusk.md](docs/dusk.md). Ringkasannya:
+
+#### 1. Persiapan (sekali saja)
+
+1. Buat database khusus test (terpisah dari database development):
+
+   ```sql
+   CREATE DATABASE abislulus_dusk CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+
+2. Salin `.env` menjadi `.env.dusk.local`, lalu ubah nilai berikut:
+
+   ```env
+   APP_URL=http://localhost:8001
+   DB_DATABASE=abislulus_dusk
+   ```
+
+   `.env.dusk.local` tidak boleh di-commit (sudah ada di `.gitignore`).
+
+3. Siapkan aset, storage, dan ChromeDriver yang sesuai dengan versi Chrome:
+
+   ```bash
+   npm run build
+   php artisan storage:link
+   php artisan dusk:chrome-driver --detect
+   ```
+
+   Ulangi `npm run build` setiap ada perubahan di `resources/scss` atau `resources/js`, dan `dusk:chrome-driver --detect` setiap Chrome ter-update.
+
+#### 2. Menjalankan Dusk di Windows (3 terminal)
+
+**Terminal 1: ChromeDriver**
+
+```powershell
+vendor\laravel\dusk\bin\chromedriver-win.exe --port=9515
+```
+
+**Terminal 2: server aplikasi mode Dusk** (dari root project)
+
+```powershell
+cd public
+$env:APP_ENV='dusk.local'
+php -d upload_max_filesize=10M -d post_max_size=12M -S 127.0.0.1:8001 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
+```
+
+**Terminal 3: jalankan test**
+
+```powershell
+php artisan dusk
+```
+
+#### 3. Menjalankan Dusk di macOS (2 terminal)
+
+ChromeDriver dijalankan otomatis oleh Dusk.
+
+**Terminal 1: server aplikasi mode Dusk** (dari root project)
+
+```bash
+cd public && APP_ENV=dusk.local php -d upload_max_filesize=10M -d post_max_size=12M -S 127.0.0.1:8001 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
+```
+
+**Terminal 2: jalankan test**
+
+```bash
+php artisan dusk
+```
+
+> Server Dusk dijalankan dengan `php -d …`, bukan `php artisan serve`, agar batas upload PHP lebih besar dari batas aplikasi (2 MB untuk foto/thumbnail, 3 MB untuk gambar hero/sampul). Tanpa ini, test validasi upload akan gagal.
+
+#### 4. Menjalankan test per anggota atau per file
+
+```bash
+php artisan dusk --group=aqeel
+php artisan dusk --group=fakhri
+php artisan dusk --group=fulca
+php artisan dusk --group=oktavia
+php artisan dusk --group=smoke                                   # smoke test landing page
+php artisan dusk tests/Browser/Fakhri/AdminProfileTest.php       # satu file
+php artisan dusk --filter=test_tc_admin_profile_001              # satu method
+php artisan dusk --browse                                        # tampilkan browser (tidak headless)
+```
+
+#### 5. Hasil & screenshot
+
+- Screenshot setiap Case ID tersimpan di `tests/Browser/screenshots/<Anggota>/` (mis. `Fakhri/TC.AdminProfile.001-step4.png`) untuk kolom Evidence test plan.
+- Jika test gagal, Dusk menyimpan `failure-*.png` di `tests/Browser/screenshots/`, log console di `tests/Browser/console/`, dan HTML halaman di `tests/Browser/source/`. Folder-folder ini dikosongkan setiap kali Dusk dijalankan, jadi salin dulu file yang dibutuhkan.
+
+#### Penting
+
+- **Server Dusk hanya untuk test.** Database `abislulus_dusk` dikosongkan setelah setiap test. Jangan membuka server Dusk untuk mencoba aplikasi secara manual.
+- **Jangan jalankan server development dan server Dusk bersamaan di port yang sama.** Matikan `php artisan serve` sebelum menjalankan Dusk, lalu matikan server Dusk (Ctrl+C) setelah selesai.
+
+---
+
 ## Alur Kerja Git untuk Tim
 
 ### Mengambil Perubahan Terbaru
@@ -242,6 +355,14 @@ Pastikan server Laravel dan Vite berjalan. Jika diperlukan, bersihkan cache konf
 ```bash
 php artisan optimize:clear
 ```
+
+### Error `Table 'abislulus_dusk.sessions' doesn't exist`
+
+Browser sedang membuka server Dusk, bukan server development. Matikan server Dusk, lalu jalankan `php artisan serve` (tambahkan `--port=8001` bila port 8000 sudah dipakai Apache/XAMPP).
+
+### Test Dusk Gagal
+
+Lihat tabel "Masalah Umum" di [docs/dusk.md](docs/dusk.md#9-masalah-umum), misalnya ChromeDriver tidak cocok dengan versi Chrome, manifest Vite usang, atau pesan "failed to upload".
 
 ### Konflik Git
 
