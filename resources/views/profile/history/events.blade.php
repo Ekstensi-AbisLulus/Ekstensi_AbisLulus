@@ -13,16 +13,16 @@
                     <p class="text-secondary mb-4">Riwayat pendaftaran career event-mu.</p>
 
                     @if ($registrations->isEmpty())
-                        <div class="text-center py-5">
+                        <div class="text-center py-5" dusk="history-empty">
                             <i class="bi bi-calendar2-x display-4 text-secondary" aria-hidden="true"></i>
                             <p class="mt-3 mb-4">Belum ada riwayat aktivitas</p>
                             @if (Route::has('events.index'))
-                                <a href="{{ route('events.index') }}" class="btn btn-primary">Jelajahi Kegiatan</a>
+                                <a href="{{ route('events.index') }}" class="btn btn-primary" dusk="explore-button">Jelajahi Kegiatan</a>
                             @endif
                         </div>
                     @else
                         <div class="table-responsive">
-                            <table class="table align-middle">
+                            <table class="table align-middle" dusk="history-table">
                                 <thead>
                                     <tr>
                                         <th scope="col">Sampul</th>
@@ -49,7 +49,7 @@
                                                 && $event->end_at->isFuture()
                                                 && ! in_array($event->status, [\App\Enums\EventStatus::Completed, \App\Enums\EventStatus::Cancelled], true);
                                         @endphp
-                                        <tr>
+                                        <tr dusk="registration-row-{{ $registration->id }}">
                                             <td>
                                                 @if ($event?->thumbnail_url)
                                                     <img src="{{ $event->thumbnail_url }}" alt="Sampul {{ $event->title }}" width="64" height="40" class="rounded object-fit-cover">
@@ -69,9 +69,9 @@
                                             <td><span class="badge {{ $statusClass }}">{{ $status?->label() ?? '—' }}</span></td>
                                             <td>
                                                 @if ($canOpenMeeting)
-                                                    <a href="{{ $event->meeting_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">Buka Link</a>
+                                                    <a href="{{ $event->meeting_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" dusk="meeting-link">Buka Link</a>
                                                 @else
-                                                    <span class="text-secondary">—</span>
+                                                    <span class="text-secondary" dusk="no-meeting-link">—</span>
                                                 @endif
                                             </td>
                                         </tr>

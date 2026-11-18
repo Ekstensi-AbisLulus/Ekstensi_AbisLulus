@@ -11,59 +11,59 @@
     @endphp
     <div class="container py-4 py-lg-5">
         @if (! $profileComplete)
-            <div class="alert alert-info" role="alert">Lengkapi profilmu untuk pengalaman yang lebih baik</div>
+            <div class="alert alert-info" role="alert" dusk="profile-alert">Lengkapi profilmu untuk pengalaman yang lebih baik</div>
         @endif
 
         <div class="row g-4">
-            <aside class="col-lg-4 col-xl-3">
+            <aside class="col-lg-4 col-xl-3" dusk="sidebar">
                 <div class="card profile-card border-0 shadow-sm rounded-4 text-center p-4">
                     @if ($avatarUrl)
-                        <img src="{{ $avatarUrl }}" class="profile-avatar mx-auto mb-3" alt="Foto profil {{ $user->name }}">
-                        <button type="button" class="btn btn-sm btn-outline-danger align-self-center mb-3" data-bs-toggle="modal" data-bs-target="#deleteAvatarModal">
+                        <img src="{{ $avatarUrl }}" class="profile-avatar mx-auto mb-3" dusk="sidebar-avatar" alt="Foto profil {{ $user->name }}">
+                        <button type="button" class="btn btn-sm btn-outline-danger align-self-center mb-3" data-bs-toggle="modal" data-bs-target="#deleteAvatarModal" dusk="delete-avatar-button">
                             <i class="bi bi-trash me-1"></i>Hapus Foto
                         </button>
                     @else
-                        <span class="profile-avatar profile-avatar-default mx-auto mb-3" aria-label="Avatar {{ $user->name }}">
+                        <span class="profile-avatar profile-avatar-default mx-auto mb-3" dusk="sidebar-avatar" aria-label="Avatar {{ $user->name }}">
                             {{ filled($user->name) ? mb_strtoupper(mb_substr($user->name, 0, 1)) : '' }}
                             @if (blank($user->name)) <i class="bi bi-person-fill"></i> @endif
                         </span>
                     @endif
-                    <h2 class="h5 mb-1">{{ $user->name }}</h2>
+                    <h2 class="h5 mb-1" dusk="sidebar-name">{{ $user->name }}</h2>
                     <p class="text-secondary small mb-4">{{ $user->email }}</p>
                     <nav class="nav nav-pills flex-column text-start gap-1">
-                        <a class="nav-link active" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i>Profil</a>
-                        <a class="nav-link text-body" href="{{ route('profile.history.elearning') }}"><i class="bi bi-play-circle me-2"></i>Aktivitas E-Learning</a>
-                        <a class="nav-link text-body" href="{{ route('profile.history.events') }}"><i class="bi bi-calendar-event me-2"></i>Aktivitas Kegiatan</a>
+                        <a class="nav-link active" href="{{ route('profile.edit') }}" dusk="nav-profile"><i class="bi bi-person me-2"></i>Profil</a>
+                        <a class="nav-link text-body" href="{{ route('profile.history.elearning') }}" dusk="nav-learning"><i class="bi bi-play-circle me-2"></i>Aktivitas E-Learning</a>
+                        <a class="nav-link text-body" href="{{ route('profile.history.events') }}" dusk="nav-events"><i class="bi bi-calendar-event me-2"></i>Aktivitas Kegiatan</a>
                     </nav>
                 </div>
             </aside>
 
             <section class="col-lg-8 col-xl-9">
                 <div class="card profile-card border-0 shadow-sm rounded-4 p-4 p-lg-5">
-                    <h1 class="h3 mb-1">Selamat Datang, {{ $user->name }}</h1>
+                    <h1 class="h3 mb-1" dusk="welcome">Selamat Datang, {{ $user->name }}</h1>
                     <p class="text-secondary mb-4">Lengkapi informasi profilmu.</p>
 
-                    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" novalidate>
+                    <form method="POST" action="{{ route('profile.update') }}" dusk="profile-form" enctype="multipart/form-data" novalidate>
                         @csrf
                         @method('PUT')
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="name" class="form-label">Nama lengkap <span class="text-danger">*</span></label>
-                                <input id="name" name="name" value="{{ old('name', $user->name) }}" maxlength="100" required class="form-control @error('name') is-invalid @enderror">
+                                <input id="name" dusk="name-input" name="name" value="{{ old('name', $user->name) }}" maxlength="100" required class="form-control @error('name') is-invalid @enderror">
                                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">Email</label>
-                                <input id="email" type="email" value="{{ $user->email }}" class="form-control" readonly>
+                                <input id="email" dusk="email-input" type="email" value="{{ $user->email }}" class="form-control" readonly>
                             </div>
                             <div class="col-md-6">
                                 <label for="birth_date" class="form-label">Tanggal lahir</label>
-                                <input id="birth_date" type="date" name="birth_date" value="{{ old('birth_date', $profile?->birth_date?->format('Y-m-d')) }}" max="{{ now()->toDateString() }}" class="form-control @error('birth_date') is-invalid @enderror">
+                                <input id="birth_date" dusk="birth-date-input" type="date" name="birth_date" value="{{ old('birth_date', $profile?->birth_date?->format('Y-m-d')) }}" max="{{ now()->toDateString() }}" class="form-control @error('birth_date') is-invalid @enderror">
                                 @error('birth_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="gender" class="form-label">Jenis kelamin</label>
-                                <select id="gender" name="gender" class="form-select @error('gender') is-invalid @enderror">
+                                <select id="gender" dusk="gender-select" name="gender" class="form-select @error('gender') is-invalid @enderror">
                                     <option value="">Pilih jenis kelamin</option>
                                     <option value="male" @selected(old('gender', $gender) === 'male')>Laki-laki</option>
                                     <option value="female" @selected(old('gender', $gender) === 'female')>Perempuan</option>
@@ -72,17 +72,17 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="phone" class="form-label">No. HP/WhatsApp <span class="text-danger">*</span></label>
-                                <input id="phone" name="phone" type="tel" value="{{ old('phone', $profile?->phone) }}" required class="form-control @error('phone') is-invalid @enderror">
+                                <input id="phone" dusk="phone-input" name="phone" type="tel" value="{{ old('phone', $profile?->phone) }}" required class="form-control @error('phone') is-invalid @enderror">
                                 @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="address" class="form-label">Alamat domisili</label>
-                                <input id="address" name="address" value="{{ old('address', $profile?->address) }}" class="form-control @error('address') is-invalid @enderror">
+                                <input id="address" dusk="address-input" name="address" value="{{ old('address', $profile?->address) }}" class="form-control @error('address') is-invalid @enderror">
                                 @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="education_level" class="form-label">Status <span class="text-danger">*</span></label>
-                                <select id="education_level" name="education_level" required class="form-select @error('education_level') is-invalid @enderror">
+                                <select id="education_level" dusk="education-select" name="education_level" required class="form-select @error('education_level') is-invalid @enderror">
                                     <option value="">Pilih status</option>
                                     @foreach (['Pelajar SMA/SMK', 'Mahasiswa', 'Fresh Graduate'] as $level)
                                         <option value="{{ $level }}" @selected(old('education_level', $educationLevel) === $level)>{{ $level }}</option>
@@ -92,46 +92,46 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="institution" class="form-label">Institusi</label>
-                                <input id="institution" name="institution" value="{{ old('institution', $profile?->institution) }}" class="form-control @error('institution') is-invalid @enderror">
+                                <input id="institution" dusk="institution-input" name="institution" value="{{ old('institution', $profile?->institution) }}" class="form-control @error('institution') is-invalid @enderror">
                                 @error('institution') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="graduation_year" class="form-label">Tahun lulus</label>
-                                <input id="graduation_year" name="graduation_year" inputmode="numeric" maxlength="4" value="{{ old('graduation_year', $profile?->graduation_year) }}" class="form-control @error('graduation_year') is-invalid @enderror">
+                                <input id="graduation_year" dusk="graduation-year-input" name="graduation_year" inputmode="numeric" maxlength="4" value="{{ old('graduation_year', $profile?->graduation_year) }}" class="form-control @error('graduation_year') is-invalid @enderror">
                                 @error('graduation_year') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="linkedin_url" class="form-label">Link CV/LinkedIn</label>
-                                <input id="linkedin_url" name="linkedin_url" type="url" value="{{ old('linkedin_url', $profile?->linkedin_url) }}" class="form-control @error('linkedin_url') is-invalid @enderror">
+                                <input id="linkedin_url" dusk="linkedin-input" name="linkedin_url" type="url" value="{{ old('linkedin_url', $profile?->linkedin_url) }}" class="form-control @error('linkedin_url') is-invalid @enderror">
                                 @error('linkedin_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-12">
                                 <label for="bio" class="form-label">Bio</label>
-                                <textarea id="bio" name="bio" rows="4" maxlength="1000" class="form-control @error('bio') is-invalid @enderror">{{ old('bio', $profile?->bio) }}</textarea>
+                                <textarea id="bio" dusk="bio-input" name="bio" rows="4" maxlength="1000" class="form-control @error('bio') is-invalid @enderror">{{ old('bio', $profile?->bio) }}</textarea>
                                 @error('bio') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-12">
                                 <label for="avatar" class="form-label">Foto profil (JPG/PNG, maks. 2 MB)</label>
-                                <input id="avatar" name="avatar" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="form-control @error('avatar') is-invalid @enderror">
+                                <input id="avatar" dusk="avatar-input" name="avatar" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="form-control @error('avatar') is-invalid @enderror">
                                 @error('avatar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
-                            <div class="col-12"><hr class="my-2"><h2 class="h5 mb-0">Ubah Password <span class="text-secondary fw-normal">(opsional)</span></h2></div>
+                            <div class="col-12"><hr class="my-2"><h2 class="h5 mb-0" dusk="password-section">Ubah Password <span class="text-secondary fw-normal">(opsional)</span></h2></div>
                             <div class="col-md-6">
                                 <label for="current_password" class="form-label">Password lama</label>
-                                <input id="current_password" name="current_password" type="password" autocomplete="current-password" class="form-control @error('current_password') is-invalid @enderror">
+                                <input id="current_password" dusk="current-password-input" name="current_password" type="password" autocomplete="current-password" class="form-control @error('current_password') is-invalid @enderror">
                                 @error('current_password') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="password" class="form-label">Password baru</label>
-                                <input id="password" name="password" type="password" autocomplete="new-password" class="form-control @error('password') is-invalid @enderror">
+                                <input id="password" dusk="password-input" name="password" type="password" autocomplete="new-password" class="form-control @error('password') is-invalid @enderror">
                                 @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="password_confirmation" class="form-label">Konfirmasi password baru</label>
-                                <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" class="form-control">
+                                <input id="password_confirmation" dusk="password-confirmation-input" name="password_confirmation" type="password" autocomplete="new-password" class="form-control">
                             </div>
                             <div class="col-12 pt-2">
-                                <button type="submit" class="btn btn-primary px-4">Simpan Perubahan</button>
+                                <button type="submit" class="btn btn-primary px-4" dusk="submit-button">Simpan Perubahan</button>
                             </div>
                         </div>
                     </form>
@@ -141,20 +141,20 @@
     </div>
 
     @if ($avatarUrl)
-        <div class="modal fade" id="deleteAvatarModal" tabindex="-1" aria-labelledby="deleteAvatarModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteAvatarModal" dusk="delete-avatar-modal" tabindex="-1" aria-labelledby="deleteAvatarModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2 class="modal-title fs-5" id="deleteAvatarModalLabel">Hapus foto profil?</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal" dusk="delete-avatar-close"></button>
                     </div>
                     <div class="modal-body">Foto profil akan dihapus dan avatar kembali ke tampilan default.</div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" dusk="delete-avatar-cancel">Batal</button>
                         <form method="POST" action="{{ route('profile.avatar.destroy') }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Ya, Hapus Foto</button>
+                            <button type="submit" class="btn btn-danger" dusk="delete-avatar-confirm">Ya, Hapus Foto</button>
                         </form>
                     </div>
                 </div>

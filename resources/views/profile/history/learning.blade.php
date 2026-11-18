@@ -13,16 +13,16 @@
                     <p class="text-secondary mb-4">Riwayat percobaan kuis terakhirmu.</p>
 
                     @if ($attempts->isEmpty())
-                        <div class="text-center py-5">
+                        <div class="text-center py-5" dusk="history-empty">
                             <i class="bi bi-journal-x display-4 text-secondary" aria-hidden="true"></i>
                             <p class="mt-3 mb-4">Belum ada riwayat aktivitas</p>
                             @if (Route::has('materials.index'))
-                                <a href="{{ route('materials.index') }}" class="btn btn-primary">Jelajahi E-Learning</a>
+                                <a href="{{ route('materials.index') }}" class="btn btn-primary" dusk="explore-button">Jelajahi E-Learning</a>
                             @endif
                         </div>
                     @else
                         <div class="table-responsive">
-                            <table class="table align-middle">
+                            <table class="table align-middle" dusk="history-table">
                                 <thead>
                                     <tr>
                                         <th scope="col">Materi</th>
@@ -39,7 +39,7 @@
                                             $score = (float) $attempt->score;
                                             $scoreClass = $score >= 70 ? 'text-bg-success' : ($score >= 50 ? 'text-bg-warning' : 'text-bg-danger');
                                         @endphp
-                                        <tr>
+                                        <tr dusk="attempt-row-{{ $attempt->id }}">
                                             <td>
                                                 <div class="d-flex align-items-center gap-2" style="min-width: 200px">
                                                     @if ($material?->thumbnail_url)
@@ -49,7 +49,7 @@
                                                     @endif
                                                     <span>
                                                         @if ($material && Route::has('materials.show'))
-                                                            <a href="{{ route('materials.show', $material) }}">{{ $material->title }}</a>
+                                                            <a href="{{ route('materials.show', $material) }}" dusk="material-link">{{ $material->title }}</a>
                                                         @else
                                                             {{ $material?->title ?? 'Materi tidak tersedia' }}
                                                         @endif
@@ -63,7 +63,7 @@
                                                     {{ $attempt->quiz?->title ?? 'Kuis tidak tersedia' }}
                                                 @endif
                                             </td>
-                                            <td><span class="badge {{ $scoreClass }}">{{ rtrim(rtrim(number_format($score, 2, '.', ''), '0'), '.') }}</span></td>
+                                            <td><span dusk="score-badge" class="badge {{ $scoreClass }}">{{ rtrim(rtrim(number_format($score, 2, '.', ''), '0'), '.') }}</span></td>
                                             <td>{{ $attempt->correct_count }}/{{ $attempt->incorrect_count }}</td>
                                             <td>{{ $attempt->completed_at?->locale('id')->translatedFormat('d F Y, H:i') ?? '—' }}</td>
                                         </tr>
