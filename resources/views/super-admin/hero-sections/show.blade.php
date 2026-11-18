@@ -45,7 +45,7 @@
             <span class="small panel-muted">Tampilan banner di halaman beranda publik</span>
         </div>
 
-        <div class="hero-banner rounded-4 overflow-hidden">
+        <div class="hero-banner rounded-4 overflow-hidden" dusk="hero-preview">
             <img
                 src="{{ $heroSection->imageSrc() }}"
                 alt="{{ $heroSection->title }}"
@@ -73,7 +73,7 @@
 
     <div class="panel-card p-3 p-md-4">
         <h3 class="panel-section-title mb-3 pb-2 border-bottom">Detail Informasi Banner</h3>
-        <dl class="row mb-0 small">
+        <dl class="row mb-0 small" dusk="hero-detail">
             <dt class="col-sm-3 panel-muted">Judul</dt>
             <dd class="col-sm-9 fw-medium">{{ $heroSection->title }}</dd>
 

@@ -11,7 +11,7 @@
                 Kelola artikel panduan karier. Artikel berstatus <strong>Dipublikasikan</strong> akan tampil di halaman beranda dan daftar artikel publik.
             </p>
         </div>
-        <a href="{{ route('super-admin.articles.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center">
+        <a href="{{ route('super-admin.articles.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center" dusk="create-button">
             <span>+ Tambah Artikel</span>
         </a>
     </div>
@@ -22,7 +22,7 @@
                 <label for="search" class="panel-form-label">Cari Judul Artikel</label>
                 <input
                     type="search"
-                    id="search"
+                    id="search" dusk="search-input"
                     name="search"
                     value="{{ $search }}"
                     placeholder="Ketik kata kunci judul artikel..."
@@ -32,7 +32,7 @@
 
             <div class="col-12 col-sm-6 col-md-3">
                 <label for="status" class="panel-form-label">Filter Status</label>
-                <select id="status" name="status" class="form-select panel-form-select">
+                <select id="status" dusk="status-filter" name="status" class="form-select panel-form-select">
                     <option value="">Semua Status</option>
                     @foreach ($statuses as $value => $label)
                         <option value="{{ $value }}" @selected($selectedStatus === $value)>{{ $label }}</option>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="col-12 col-sm-6 col-md-3 d-flex gap-2">
-                <button type="submit" class="btn btn-primary btn-panel flex-grow-1">
+                <button type="submit" class="btn btn-primary btn-panel flex-grow-1" dusk="search-submit">
                     <i class="bi bi-search" aria-hidden="true"></i>
                     <span>Cari</span>
                 </button>
@@ -56,7 +56,7 @@
 
     <div class="panel-card overflow-hidden">
         @if ($articles->isEmpty())
-            <div class="p-5 text-center">
+            <div class="p-5 text-center" dusk="empty-state">
                 <i class="bi bi-journal-text fs-1 panel-muted d-block mb-2" aria-hidden="true"></i>
                 @if ($search !== '' || $selectedStatus !== '')
                     <h3 class="h6 fw-semibold mb-1">Tidak ada artikel yang cocok</h3>
@@ -78,7 +78,7 @@
             </div>
         @else
             <div class="table-responsive">
-                <table class="table panel-table mb-0">
+                <table class="table panel-table mb-0" dusk="article-table">
                     <thead>
                         <tr>
                             <th scope="col">Sampul</th>
@@ -90,7 +90,7 @@
                     </thead>
                     <tbody>
                         @foreach ($articles as $article)
-                            <tr>
+                            <tr dusk="article-row-{{ $article->id }}">
                                 <td>
                                     <img
                                         src="{{ $article->coverImageSrc() ?? asset('images/placeholders/article-cover.svg') }}"
@@ -123,7 +123,7 @@
                                     <div class="d-inline-flex align-items-center gap-2">
                                         <a
                                             href="{{ route('super-admin.articles.show', $article) }}"
-                                            class="btn-icon btn-icon-view"
+                                            class="btn-icon btn-icon-view" dusk="view-{{ $article->id }}"
                                             aria-label="Lihat pratinjau {{ $article->title }}"
                                             title="Lihat pratinjau"
                                         >
@@ -131,7 +131,7 @@
                                         </a>
                                         <a
                                             href="{{ route('super-admin.articles.edit', $article) }}"
-                                            class="btn-icon btn-icon-edit"
+                                            class="btn-icon btn-icon-edit" dusk="edit-{{ $article->id }}"
                                             aria-label="Ubah {{ $article->title }}"
                                             title="Ubah"
                                         >
@@ -139,7 +139,7 @@
                                         </a>
                                         <button
                                             type="button"
-                                            class="btn-icon btn-icon-delete"
+                                            class="btn-icon btn-icon-delete" dusk="delete-{{ $article->id }}"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteArticleModal-{{ $article->id }}"
                                             aria-label="Hapus {{ $article->title }}"
@@ -156,7 +156,7 @@
             </div>
 
             @if ($articles->hasPages())
-                <div class="p-3 border-top">
+                <div class="p-3 border-top" dusk="pagination">
                     {{ $articles->links() }}
                 </div>
             @endif
@@ -166,7 +166,7 @@
     @foreach ($articles as $article)
         <div
             class="modal fade"
-            id="deleteArticleModal-{{ $article->id }}"
+            id="deleteArticleModal-{{ $article->id }}" dusk="delete-modal-{{ $article->id }}"
             tabindex="-1"
             aria-labelledby="deleteArticleModalLabel-{{ $article->id }}"
             aria-hidden="true"
@@ -177,7 +177,7 @@
                         <h3 class="modal-title h6 fw-bold mb-0" id="deleteArticleModalLabel-{{ $article->id }}">
                             Konfirmasi Hapus Artikel
                         </h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup" dusk="delete-close-{{ $article->id }}"></button>
                     </div>
                     <div class="modal-body">
                         <p class="mb-0">
@@ -185,13 +185,13 @@
                         </p>
                     </div>
                     <div class="modal-footer border-top">
-                        <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal" dusk="delete-cancel-{{ $article->id }}">
                             Batal
                         </button>
                         <form method="POST" action="{{ route('super-admin.articles.destroy', $article) }}" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-panel">
+                            <button type="submit" class="btn btn-danger btn-panel" dusk="delete-confirm-{{ $article->id }}">
                                 <i class="bi bi-trash" aria-hidden="true"></i>
                                 <span>Hapus</span>
                             </button>

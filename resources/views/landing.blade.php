@@ -10,7 +10,7 @@
 
     @if ($heroSections->count() > 1)
         <section aria-label="Sorotan Program AbisLulus">
-            <div id="heroCarousel" class="carousel slide hero-carousel">
+            <div id="heroCarousel" dusk="hero-carousel" class="carousel slide hero-carousel">
                 <div class="carousel-indicators">
                     @foreach ($heroSections as $index => $hero)
                         <button
@@ -49,7 +49,7 @@
                                         @endif
 
                                         @if ($hero->target_url)
-                                            <a href="{{ $hero->target_url }}" class="btn btn-primary btn-lg btn-panel">
+                                            <a href="{{ $hero->target_url }}" class="btn btn-primary btn-lg btn-panel" dusk="hero-cta">
                                                 <span>Jelajahi Program</span>
                                             </a>
                                         @endif
@@ -60,12 +60,12 @@
                     @endforeach
                 </div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Slide sebelumnya">
+                <button class="carousel-control-prev" dusk="hero-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Slide sebelumnya">
                     <span class="carousel-control-icon-box" aria-hidden="true">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     </span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Slide berikutnya">
+                <button class="carousel-control-next" dusk="hero-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Slide berikutnya">
                     <span class="carousel-control-icon-box" aria-hidden="true">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     </span>
@@ -77,7 +77,7 @@
             /** @var \App\Models\HeroSection $hero */
             $hero = $heroSections->first();
         @endphp
-        <section class="hero-banner py-5">
+        <section class="hero-banner py-5" dusk="hero-single">
             <img
                 src="{{ $hero->imageSrc() }}"
                 alt="{{ $hero->title }}"
@@ -94,7 +94,7 @@
                         <p class="hero-banner-subtitle mb-4">{{ $hero->subtitle }}</p>
                     @endif
                     @if ($hero->target_url)
-                        <a href="{{ $hero->target_url }}" class="btn btn-primary btn-lg btn-panel">
+                        <a href="{{ $hero->target_url }}" class="btn btn-primary btn-lg btn-panel" dusk="hero-cta">
                             <span>Jelajahi Program</span>
                         </a>
                     @endif
@@ -103,7 +103,7 @@
         </section>
     @else
         {{-- Tampilan hero default bila belum ada hero aktif --}}
-        <section class="hero py-5">
+        <section class="hero py-5" dusk="hero-default">
             <div class="container py-lg-5">
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6">
@@ -113,8 +113,8 @@
                             dan ikuti Career Mentoring bersama praktisi secara gratis dalam satu platform.
                         </p>
                         <div class="d-flex flex-wrap gap-2">
-                            <a href="{{ route('materials.index') }}" class="btn btn-primary btn-lg btn-panel">Mulai Belajar</a>
-                            <a href="{{ route('events.index') }}" class="btn btn-outline-primary btn-lg btn-panel">Lihat Kegiatan</a>
+                            <a href="{{ route('materials.index') }}" class="btn btn-primary btn-lg btn-panel" dusk="default-learn-button">Mulai Belajar</a>
+                            <a href="{{ route('events.index') }}" class="btn btn-outline-primary btn-lg btn-panel" dusk="default-events-button">Lihat Kegiatan</a>
                         </div>
                     </div>
                     <div class="col-lg-6 d-none d-lg-block">
@@ -173,14 +173,14 @@
     @endforeach
 
     {{-- Section Artikel Terbaru (PBI-23) --}}
-    <section class="section bg-white">
+    <section class="section bg-white" dusk="latest-articles">
         <div class="container">
             <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-between gap-3 mb-4">
                 <div>
                     <h2 class="section-title mb-1">Artikel Terbaru</h2>
                     <p class="panel-muted mb-0">Panduan dan wawasan karier terbaru untuk lulusan SMA/SMK dan fresh graduate.</p>
                 </div>
-                <a href="{{ route('articles.index') }}" class="btn btn-outline-primary btn-panel align-self-start align-self-sm-end">
+                <a href="{{ route('articles.index') }}" class="btn btn-outline-primary btn-panel align-self-start align-self-sm-end" dusk="see-all-articles">
                     <span>Lihat Semua</span>
                 </a>
             </div>
@@ -195,7 +195,7 @@
                 <div class="row g-4">
                     @foreach ($latestArticles as $article)
                         <div class="col-12 col-md-6 col-lg-4">
-                            <article class="card article-card h-100 d-flex flex-column">
+                            <article dusk="latest-article-card" class="card article-card h-100 d-flex flex-column">
                                 <a href="{{ route('articles.show', $article) }}" class="text-decoration-none" tabindex="-1" aria-hidden="true">
                                     <img
                                         src="{{ $article->coverImageSrc() ?? asset('images/placeholders/article-cover.svg') }}"

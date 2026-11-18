@@ -17,7 +17,7 @@
         </a>
     </div>
 
-    <form method="POST" action="{{ route('super-admin.hero-sections.store') }}" enctype="multipart/form-data" data-panel-form novalidate>
+    <form method="POST" action="{{ route('super-admin.hero-sections.store') }}" enctype="multipart/form-data" data-panel-form novalidate dusk="hero-form">
         @csrf
 
         <div class="row g-4">
@@ -31,7 +31,7 @@
                         </label>
                         <input
                             type="text"
-                            id="title"
+                            id="title" dusk="title-input"
                             name="title"
                             value="{{ old('title') }}"
                             maxlength="200"
@@ -50,7 +50,7 @@
                     <div class="mb-3">
                         <label for="subtitle" class="panel-form-label">Subjudul (Opsional)</label>
                         <textarea
-                            id="subtitle"
+                            id="subtitle" dusk="subtitle-input"
                             name="subtitle"
                             rows="3"
                             placeholder="Contoh: Belajar gratis lewat E-Learning dan ikuti Career Mentoring bersama praktisi."
@@ -68,7 +68,7 @@
                         <label for="target_url" class="panel-form-label">Target URL Tombol (Opsional)</label>
                         <input
                             type="text"
-                            id="target_url"
+                            id="target_url" dusk="target-url-input"
                             name="target_url"
                             value="{{ old('target_url') }}"
                             maxlength="2048"
@@ -97,7 +97,7 @@
                         </label>
                         <input
                             type="file"
-                            id="image"
+                            id="image" dusk="image-input"
                             name="image"
                             accept="image/jpeg,image/png,image/webp"
                             required
@@ -111,7 +111,7 @@
                             <div class="form-text panel-muted" id="image-hint">Format JPG, JPEG, PNG, atau WebP. Ukuran maksimal 3 MB.</div>
                         @enderror
 
-                        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0 d-none" role="alert" data-image-error></div>
+                        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0 d-none" role="alert" data-image-error dusk="image-client-error"></div>
 
                         <div class="image-preview-frame mt-3">
                             <div data-image-empty>
@@ -127,7 +127,7 @@
                                     width="600"
                                     height="300"
                                     class="image-preview-media mb-2"
-                                    data-image-preview
+                                    data-image-preview dusk="image-preview"
                                 >
                                 <div class="small panel-muted text-truncate" data-image-meta></div>
                             </div>
@@ -141,7 +141,7 @@
                                 class="form-check-input @error('is_active') is-invalid @enderror"
                                 type="checkbox"
                                 role="switch"
-                                id="is_active"
+                                id="is_active" dusk="active-switch"
                                 name="is_active"
                                 value="1"
                                 @checked((string) old('is_active', '1') === '1')
@@ -157,7 +157,7 @@
                     </div>
 
                     <div class="d-flex flex-wrap gap-2 pt-3 border-top">
-                        <button type="submit" class="btn btn-primary btn-panel flex-grow-1" data-submit-btn>
+                        <button type="submit" class="btn btn-primary btn-panel flex-grow-1" data-submit-btn dusk="submit-button">
                             <span data-submit-default>
                                 <i class="bi bi-check-lg me-1" aria-hidden="true"></i>Simpan Hero Section
                             </span>

@@ -66,7 +66,7 @@
                 <div class="row g-4">
                     @foreach ($articles as $article)
                         <div class="col-12 col-md-6 col-lg-4">
-                            <article class="card article-card h-100 d-flex flex-column">
+                            <article dusk="article-card" class="card article-card h-100 d-flex flex-column">
                                 <a href="{{ route('articles.show', $article) }}" class="text-decoration-none" tabindex="-1" aria-hidden="true">
                                     <img
                                         src="{{ $article->coverImageSrc() ?? asset('images/placeholders/article-cover.svg') }}"
@@ -100,7 +100,7 @@
                 </div>
 
                 @if ($articles->hasPages())
-                    <div class="mt-5 d-flex justify-content-center">
+                    <div class="mt-5 d-flex justify-content-center" dusk="pagination">
                         {{ $articles->links() }}
                     </div>
                 @endif

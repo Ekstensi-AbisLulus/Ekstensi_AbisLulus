@@ -13,13 +13,13 @@
                     </a>
                 </div>
 
-                <div class="small panel-muted mb-2">
+                <div class="small panel-muted mb-2" dusk="article-meta">
                     <span>Oleh <strong>{{ $article->author?->name ?? 'Tim AbisLulus' }}</strong></span>
                     <span class="mx-1">&middot;</span>
                     <span>{{ ($article->published_at ?? $article->created_at)?->format('d M Y') }}</span>
                 </div>
 
-                <h1 class="display-6 fw-bold mb-3">{{ $article->title }}</h1>
+                <h1 class="display-6 fw-bold mb-3" dusk="article-title">{{ $article->title }}</h1>
 
                 @if ($article->excerpt)
                     <p class="lead panel-muted mb-4">{{ $article->excerpt }}</p>
@@ -31,11 +31,11 @@
                     width="800"
                     height="450"
                     fetchpriority="high"
-                    class="article-detail-cover mb-4"
+                    class="article-detail-cover mb-4" dusk="article-cover"
                 >
 
                 <div class="card p-4 p-md-5">
-                    <div class="article-body">
+                    <div class="article-body" dusk="article-content">
                         {!! nl2br(e($article->content)) !!}
                     </div>
                 </div>

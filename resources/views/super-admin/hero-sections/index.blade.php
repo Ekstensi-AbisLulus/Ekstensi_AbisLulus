@@ -11,7 +11,7 @@
                 Kelola banner utama di halaman beranda. Jika lebih dari satu hero berstatus aktif, beranda akan menampilkannya sebagai carousel.
             </p>
         </div>
-        <a href="{{ route('super-admin.hero-sections.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center">
+        <a href="{{ route('super-admin.hero-sections.create') }}" class="btn btn-primary btn-panel align-self-start align-self-md-center" dusk="create-button">
             <span>+ Tambah Hero</span>
         </a>
     </div>
@@ -30,7 +30,7 @@
             </div>
         @else
             <div class="table-responsive">
-                <table class="table panel-table mb-0">
+                <table class="table panel-table mb-0" dusk="hero-table">
                     <thead>
                         <tr>
                             <th scope="col">Pratinjau</th>
@@ -43,7 +43,7 @@
                     </thead>
                     <tbody>
                         @foreach ($heroSections as $hero)
-                            <tr>
+                            <tr dusk="hero-row-{{ $hero->id }}">
                                 <td>
                                     <img
                                         src="{{ $hero->imageSrc() }}"
@@ -71,7 +71,7 @@
                                     <form method="POST" action="{{ route('super-admin.hero-sections.toggle', $hero) }}" class="d-inline">
                                         @csrf
                                         @method('PATCH')
-                                        <button
+                                        <button dusk="toggle-{{ $hero->id }}"
                                             type="submit"
                                             class="badge-status {{ $hero->is_active ? 'badge-status-active' : 'badge-status-inactive' }}"
                                             aria-label="{{ $hero->is_active ? 'Nonaktifkan hero '.$hero->title : 'Aktifkan hero '.$hero->title }}"
@@ -89,7 +89,7 @@
                                     <div class="d-inline-flex align-items-center gap-2">
                                         <a
                                             href="{{ route('super-admin.hero-sections.show', $hero) }}"
-                                            class="btn-icon btn-icon-view"
+                                            class="btn-icon btn-icon-view" dusk="view-{{ $hero->id }}"
                                             aria-label="Lihat pratinjau {{ $hero->title }}"
                                             title="Lihat pratinjau"
                                         >
@@ -97,7 +97,7 @@
                                         </a>
                                         <a
                                             href="{{ route('super-admin.hero-sections.edit', $hero) }}"
-                                            class="btn-icon btn-icon-edit"
+                                            class="btn-icon btn-icon-edit" dusk="edit-{{ $hero->id }}"
                                             aria-label="Ubah {{ $hero->title }}"
                                             title="Ubah"
                                         >
@@ -105,7 +105,7 @@
                                         </a>
                                         <button
                                             type="button"
-                                            class="btn-icon btn-icon-delete"
+                                            class="btn-icon btn-icon-delete" dusk="delete-{{ $hero->id }}"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteHeroModal-{{ $hero->id }}"
                                             aria-label="Hapus {{ $hero->title }}"
@@ -122,7 +122,7 @@
             </div>
 
             @if ($heroSections->hasPages())
-                <div class="p-3 border-top">
+                <div class="p-3 border-top" dusk="pagination">
                     {{ $heroSections->links() }}
                 </div>
             @endif
@@ -132,7 +132,7 @@
     @foreach ($heroSections as $hero)
         <div
             class="modal fade"
-            id="deleteHeroModal-{{ $hero->id }}"
+            id="deleteHeroModal-{{ $hero->id }}" dusk="delete-modal-{{ $hero->id }}"
             tabindex="-1"
             aria-labelledby="deleteHeroModalLabel-{{ $hero->id }}"
             aria-hidden="true"
@@ -143,7 +143,7 @@
                         <h3 class="modal-title h6 fw-bold mb-0" id="deleteHeroModalLabel-{{ $hero->id }}">
                             Konfirmasi Hapus Hero Section
                         </h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup" dusk="delete-close-{{ $hero->id }}"></button>
                     </div>
                     <div class="modal-body">
                         <p class="mb-0">
@@ -151,13 +151,13 @@
                         </p>
                     </div>
                     <div class="modal-footer border-top">
-                        <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-outline-secondary btn-panel" data-bs-dismiss="modal" dusk="delete-cancel-{{ $hero->id }}">
                             Batal
                         </button>
                         <form method="POST" action="{{ route('super-admin.hero-sections.destroy', $hero) }}" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-panel">
+                            <button type="submit" class="btn btn-danger btn-panel" dusk="delete-confirm-{{ $hero->id }}">
                                 <i class="bi bi-trash" aria-hidden="true"></i>
                                 <span>Hapus</span>
                             </button>

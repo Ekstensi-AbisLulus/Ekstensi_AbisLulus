@@ -17,7 +17,7 @@
         </a>
     </div>
 
-    <form method="POST" action="{{ route('super-admin.articles.update', $article) }}" enctype="multipart/form-data" data-panel-form novalidate>
+    <form method="POST" action="{{ route('super-admin.articles.update', $article) }}" enctype="multipart/form-data" data-panel-form novalidate dusk="article-form">
         @csrf
         @method('PUT')
 
@@ -33,7 +33,7 @@
                             </label>
                             <input
                                 type="text"
-                                id="title"
+                                id="title" dusk="title-input"
                                 name="title"
                                 value="{{ old('title', $article->title) }}"
                                 maxlength="200"
@@ -57,7 +57,7 @@
                                 <span class="input-group-text slug-prefix" id="slug-addon">/artikel/</span>
                                 <input
                                     type="text"
-                                    id="slug-preview"
+                                    id="slug-preview" dusk="slug-preview"
                                     value="{{ old('update_slug') === '1' && old('title') ? \Illuminate\Support\Str::limit(\Illuminate\Support\Str::slug((string) old('title')), 200, '') : $article->slug }}"
                                     data-initial-slug="{{ $article->slug }}"
                                     readonly
@@ -69,7 +69,7 @@
                                 <input
                                     class="form-check-input @error('update_slug') is-invalid @enderror"
                                     type="checkbox"
-                                    id="update_slug"
+                                    id="update_slug" dusk="update-slug"
                                     name="update_slug"
                                     value="1"
                                     data-slug-toggle-control
@@ -89,7 +89,7 @@
                     <div class="mb-3">
                         <label for="excerpt" class="panel-form-label">Ringkasan / Excerpt (Opsional)</label>
                         <textarea
-                            id="excerpt"
+                            id="excerpt" dusk="excerpt-input"
                             name="excerpt"
                             rows="3"
                             maxlength="300"
@@ -109,7 +109,7 @@
                             Konten Artikel <span class="text-danger" aria-hidden="true">*</span>
                         </label>
                         <textarea
-                            id="content"
+                            id="content" dusk="content-input"
                             name="content"
                             rows="12"
                             required
@@ -135,7 +135,7 @@
                             Status Publikasi <span class="text-danger" aria-hidden="true">*</span>
                         </label>
                         <select
-                            id="status"
+                            id="status" dusk="status-select"
                             name="status"
                             required
                             class="form-select panel-form-select @error('status') is-invalid @enderror"
@@ -164,7 +164,7 @@
                         <label for="cover_image" class="panel-form-label">Ganti Gambar Sampul (Opsional)</label>
                         <input
                             type="file"
-                            id="cover_image"
+                            id="cover_image" dusk="cover-input"
                             name="cover_image"
                             accept="image/jpeg,image/png,image/webp"
                             data-image-input
@@ -181,7 +181,7 @@
                             </div>
                         @endif
 
-                        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0 d-none" role="alert" data-image-error></div>
+                        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0 d-none" role="alert" data-image-error dusk="image-client-error"></div>
 
                         <div class="image-preview-frame mt-3">
                             <div class="{{ $currentCover ? 'd-none' : '' }}" data-image-empty>
@@ -198,7 +198,7 @@
                                     width="640"
                                     height="360"
                                     class="image-preview-media mb-2"
-                                    data-image-preview
+                                    data-image-preview dusk="cover-preview"
                                 >
                                 <div class="small panel-muted text-truncate" data-image-meta data-initial-meta="Sampul saat ini">
                                     {{ $currentCover ? 'Sampul saat ini' : '' }}
@@ -208,7 +208,7 @@
                     </div>
 
                     <div class="d-flex flex-wrap gap-2 pt-3 border-top">
-                        <button type="submit" class="btn btn-primary btn-panel flex-grow-1" data-submit-btn>
+                        <button type="submit" class="btn btn-primary btn-panel flex-grow-1" data-submit-btn dusk="submit-button">
                             <span data-submit-default>
                                 <i class="bi bi-check-lg me-1" aria-hidden="true"></i>Simpan Perubahan
                             </span>
