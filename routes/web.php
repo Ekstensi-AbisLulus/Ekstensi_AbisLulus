@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 | Publik (PRD §8.4)
 |--------------------------------------------------------------------------
 */
-Route::view('/', 'landing')->name('home');
+Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/e-learning', [MaterialController::class, 'index'])->name('materials.index');
 Route::get('/e-learning/{material}', [MaterialController::class, 'show'])->name('materials.show');
 Route::get('/kegiatan', [EventController::class, 'index'])->name('events.index');
@@ -65,7 +65,8 @@ Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')-
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/profil/riwayat/e-learning', [ProfileHistoryController::class, 'learning'])->name('profile.history.learning');
+    Route::delete('/profil/foto', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
+    Route::get('/profil/riwayat/e-learning', [ProfileHistoryController::class, 'learning'])->name('profile.history.elearning');
     Route::get('/profil/riwayat/kegiatan', [ProfileHistoryController::class, 'events'])->name('profile.history.events');
 
     Route::get('/kuis/hasil/{attempt}', [QuizController::class, 'result'])->name('quizzes.result');
@@ -94,7 +95,9 @@ Route::middleware(['auth', 'role:admin,super_admin'])
         Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::get('/profil', [Admin\ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profil', [Admin\ProfileController::class, 'update'])->name('profile.update');
-        Route::get('/riwayat', [Admin\HistoryController::class, 'index'])->name('history');
+        Route::put('/profil/password', [Admin\ProfileController::class, 'updatePassword'])->name('profile.password.update');
+        Route::delete('/profil/foto', [Admin\ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
+        Route::get('/riwayat', [Admin\ActivityHistoryController::class, 'index'])->name('history');
 
         Route::resource('materials', Admin\MaterialController::class);
         Route::resource('quizzes', Admin\QuizController::class);
@@ -114,6 +117,7 @@ Route::middleware(['auth', 'role:super_admin'])
         Route::get('/dashboard', [SuperAdmin\DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('admins', SuperAdmin\AdminController::class);
+        Route::patch('/hero-sections/{hero_section}/toggle', [SuperAdmin\HeroSectionController::class, 'toggle'])->name('hero-sections.toggle');
         Route::resource('hero-sections', SuperAdmin\HeroSectionController::class);
         Route::resource('articles', SuperAdmin\ArticleController::class);
 

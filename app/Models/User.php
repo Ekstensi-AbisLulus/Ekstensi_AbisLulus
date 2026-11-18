@@ -81,6 +81,27 @@ class User extends Authenticatable
     }
 
     /**
+     * Huruf pertama nama, dipakai sebagai avatar default.
+     */
+    public function initial(): string
+    {
+        return mb_strtoupper(mb_substr($this->name ?? '', 0, 1)) ?: '?';
+    }
+
+    /**
+     * URL foto profil, null bila belum mengunggah foto.
+     */
+    public function avatarUrl(): ?string
+    {
+        // Model yang belum tersimpan (mis. preview layout) tidak punya profil di DB.
+        if (! $this->exists && ! $this->relationLoaded('profile')) {
+            return null;
+        }
+
+        return $this->profile?->avatar_url;
+    }
+
+    /**
      * Nama route tujuan setelah login (PBI-02).
      */
     public function homeRoute(): string
